@@ -5,9 +5,10 @@
 	max-width: 336px;
 	height: 70%;
 	align-items: center;
-	column-gap: 18px;
-	row-gap: 16px;
-	padding-left: 25px;
+	column-gap: 24px;
+	row-gap: 7px;
+	padding-left: 32px;
+	padding-top: 4px;
 }
 
 @media all and (max-width: 500px) {

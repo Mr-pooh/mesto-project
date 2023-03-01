@@ -1,0 +1,13 @@
+.popup__fields {
+	padding: 0;
+	border: none;
+	align-self: center;
+	width: 83%;
+	margin: 0;
+}
+
+@media all and (max-width: 500px) {
+	.popup__fields {
+		width: 84%;
+	}
+}

@@ -1,12 +1,11 @@
 .popup__field {
-	width: 90%;
+	width: 100%;
   border: 0;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
   box-sizing: border-box;
-  margin-bottom: 17px;
-  align-self: center;
+  margin-bottom: 28px;
   padding: 0;
-  padding-bottom: 13px;
+  padding-bottom: 9px;
   font-size: 14px;
   font-weight: 400;
   line-height: 16.94px;
@@ -20,8 +19,7 @@
 
 @media all and (max-width: 500px) {
 	.popup__field {
-		width: 84.5%;
-		margin-bottom: 30px;
-		padding-bottom: 9.5px;
+		margin-bottom: 29px;
+		padding-bottom: 8px;
 	}
 }

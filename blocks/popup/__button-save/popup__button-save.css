@@ -1,12 +1,11 @@
 .popup__button-save {
-	width: 90%;
-	align-self: center;
+	width: 100%;
 	height: 50px;
 	background-color: #000;
 	color: #fff;
 	padding: 0;
 	margin: 0;
-	margin-top: 31px;
+	margin-top: 20px;
 	border-radius: 2px;
 	transition: opacity .3s linear;
 	font-size: 18px;
@@ -26,8 +25,7 @@
 	.popup__button-save {
 		font-size: 14px;
 		line-height: 16.94px;
-		width: 84.5%;
-		margin-top: 14px;
+		margin-top: 17px;
 		height: 46px;
 	}
 }

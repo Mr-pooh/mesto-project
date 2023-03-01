@@ -1,0 +1,13 @@
+.popup__buttons {
+	border: none;
+	padding: 0;
+	margin: 0;
+	align-self: center;
+	width: 83%;
+}
+
+@media all and (max-width: 500px) {
+	.popup__buttons {
+		width: 85%;
+	}
+}
