@@ -20,19 +20,19 @@
 			</div>
 			<button class="profile__add-button" type="button"></button>
 		</section>
-		<section class="popup"> <!--добавить popup_opened для открытия окна редактирования-->
-			<form class="popup__container">
-				<h2 class="popup__title">Редактировать профиль</h2>
-				<fieldset class="popup__fields">
-					<input class="popup__field" type="text" value="Жак-Ив Кусто" placeholder="Имя">
-					<input class="popup__field" type="text" value="Исследователь океана" placeholder="О себе">
-				</fieldset>
-				<fieldset class="popup__buttons">
+		<div class="popup popup_opened"> <!--добавить popup_opened для открытия окна редактирования-->
+			<div class="popup__container">
+				<form class="popup__form">
+					<h2 class="popup__title">Редактировать профиль</h2>
+					<fieldset class="popup__fields">
+						<input class="popup__field" type="text" value="Жак-Ив Кусто" placeholder="Имя">
+						<input class="popup__field" type="text" value="Исследователь океана" placeholder="О себе">
+					</fieldset>
 					<button class="popup__button-save" name="knopcka" type="submit" value="save">Сохранить</button>
-					<button class="popup__button-close" name="knopcka" type="button" value="close"></button>
-				</fieldset>
-			</form>
-		</section>
+				</form>
+				<button class="popup__button-close" name="knopcka" type="button" value="close"></button>
+			</div>
+		</div>
 		<section class="places">
 			<ul class="cards">
 				<li class="card">

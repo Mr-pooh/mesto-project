@@ -1,5 +1,4 @@
 .popup__title {
-	width: 83%;
 	align-self: center;
 	margin: 0;
 	padding: 0;
@@ -16,6 +15,5 @@
 		line-height: 21.78px;
 		padding-top: 25px;
 		padding-bottom: 75px;
-		width: 84.2%;
 	}
 }
