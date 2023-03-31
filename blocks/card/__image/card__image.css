@@ -5,3 +5,7 @@
 	object-position: 100%;
 	overflow: hidden;
 }
+
+.card__image:hover {
+	cursor: zoom-in;
+}
