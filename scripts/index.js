@@ -1,7 +1,7 @@
 
-const buttonEdit = document.querySelector('.profile__add-button');
+const buttonAdd = document.querySelector('.profile__add-button');
 const buttonInfo = document.querySelector('.profile-info__edit-button');
-let popup = document.querySelectorAll('.popup');
+const popup = document.querySelectorAll('.popup');
 
 function formInfo() {
 	popup[0].classList.toggle('popup_opened');
@@ -16,7 +16,7 @@ function formImage() {
 }
 
 buttonInfo.addEventListener('click', formInfo);
-buttonEdit.addEventListener('click', formEdit);
+buttonAdd.addEventListener('click', formEdit);
 const buttonClose = document.querySelectorAll('.popup__button-close');
 buttonClose[0].addEventListener('click', formInfo);
 buttonClose[1].addEventListener('click', formEdit);

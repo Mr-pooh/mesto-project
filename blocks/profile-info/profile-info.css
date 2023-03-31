@@ -3,6 +3,7 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	max-width: 336px;
+	min-width: 336px;
 	height: 70%;
 	align-items: center;
 	column-gap: 24px;
