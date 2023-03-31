@@ -20,7 +20,7 @@
 			</div>
 			<button class="profile__add-button" type="button"></button>
 		</section>
-		<div class="popup"> <!--добавить popup_opened для открытия окна редактирования-->
+		<div class="popup">
 			<div class="popup__container">
 				<form class="popup__form">
 					<h2 class="popup__title">Редактировать профиль</h2>
@@ -33,9 +33,40 @@
 				<button class="popup__button-close" name="knopcka" type="button" value="close"></button>
 			</div>
 		</div>
+		<div class="popup">
+			<div class="popup__container">
+				<form class="popup__form">
+					<h2 class="popup__title">Новое место</h2>
+					<fieldset class="popup__fields">
+						<input class="popup__field" type="text" value="" placeholder="Название">
+						<input class="popup__field" type="url" value="" placeholder="Ссылка на страницу">
+					</fieldset>
+					<button class="popup__button-save" name="knopcka" type="submit" value="save">Создать</button>
+				</form>
+				<button class="popup__button-close" name="knopcka" type="button" value="close"></button>
+			</div>
+		</div>
+		<div class="popup">
+			<div class="popup__container-image">
+				<img class="popup__image" src="" alt="">
+				<div class="popup__button-close"></div>
+				<p class="popup__text"></p>
+			</div>
+		</div>
+		<template id="card">
+			<li class="card">
+				<button class="card__close" type="button" name="knopka"></button>
+				<img class="card__image" src="" alt="">
+				<div class="card__text">
+					<h3 class="card__title"></h3>
+					<button class="card__like" type="button" name="knopka"></button>
+				</div>
+			</li>
+		</template>
 		<section class="places">
 			<ul class="cards">
-				<li class="card">
+				<!-- <li class="card">
+					<button class="card__close" type="button" name="knopka"></button>
 					<img class="card__image" src="./images/karachaevsk.jpg" alt="Карачаево-Черкесия">
 					<div class="card__text">
 						<h3 class="card__title">Карачаево-Черкесия</h3>
@@ -76,12 +107,13 @@
 						<h3 class="card__title">Карачаево-Черкесия</h3>
 						<button class="card__like" type="button"></button>
 					</div>
-				</li>
+				</li> -->
 			</ul>
 		</section>
 	</main>
 	<footer class="footer">
-		<p class="footer__copyright">© 2020 Mesto Russia</p>
+		<p class="footer__copyright">© 2023 Mesto Russia</p>
 	</footer>
+	<script src="./index.js"></script>
 </body>
 </html>

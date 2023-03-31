@@ -1,0 +1,21 @@
+.card__close {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	background-image: url(../../../images/button-close.svg);
+	background-position: 100%;
+	background-repeat: no-repeat;
+	background-size: 18px 19px;
+	width: 18px;
+	height: 19px;
+	border: none;
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	background-color: transparent;
+	transition: opacity 0.3s linear;
+}
+
+.card__close:hover {
+	opacity: 0.6;
+}
