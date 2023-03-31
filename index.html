@@ -22,41 +22,41 @@
 		</section>
 		<div class="popup">
 			<div class="popup__container">
-				<form class="popup__form">
+				<form class="popup__form" name="form-info">
 					<h2 class="popup__title">Редактировать профиль</h2>
 					<fieldset class="popup__fields">
 						<input class="popup__field" type="text" value="Жак-Ив Кусто" placeholder="Имя">
 						<input class="popup__field" type="text" value="Исследователь океана" placeholder="О себе">
 					</fieldset>
-					<button class="popup__button-save" name="knopcka" type="submit" value="save">Сохранить</button>
+					<button class="popup__button-save" type="submit" value="save">Сохранить</button>
 				</form>
-				<button class="popup__button-close" name="knopcka" type="button" value="close"></button>
+				<button class="popup__button-close" type="button" value="close"></button>
 			</div>
 		</div>
 		<div class="popup">
 			<div class="popup__container">
-				<form class="popup__form">
+				<form class="popup__form" name="form-create">
 					<h2 class="popup__title">Новое место</h2>
 					<fieldset class="popup__fields">
 						<input class="popup__field" type="text" value="" placeholder="Название">
 						<input class="popup__field" type="url" value="" placeholder="Ссылка на страницу">
 					</fieldset>
-					<button class="popup__button-save" name="knopcka" type="submit" value="save">Создать</button>
+					<button class="popup__button-save" type="submit" value="save">Создать</button>
 				</form>
-				<button class="popup__button-close" name="knopcka" type="button" value="close"></button>
+				<button class="popup__button-close" type="button" value="close"></button>
 			</div>
 		</div>
-		<div class="popup">
+		<div class="popup popup_opened-image">
 			<div class="popup__container-image">
-				<img class="popup__image" src="" alt="">
-				<div class="popup__button-close"></div>
+				<img class="popup__image" src="#" alt="">
+				<button class="popup__button-close" type="button" value="close"></button>
 				<p class="popup__text"></p>
 			</div>
 		</div>
 		<template id="card">
 			<li class="card">
 				<button class="card__close" type="button" name="knopka"></button>
-				<img class="card__image" src="" alt="">
+				<img class="card__image" src="#" alt="">
 				<div class="card__text">
 					<h3 class="card__title"></h3>
 					<button class="card__like" type="button" name="knopka"></button>
@@ -65,55 +65,12 @@
 		</template>
 		<section class="places">
 			<ul class="cards">
-				<!-- <li class="card">
-					<button class="card__close" type="button" name="knopka"></button>
-					<img class="card__image" src="./images/karachaevsk.jpg" alt="Карачаево-Черкесия">
-					<div class="card__text">
-						<h3 class="card__title">Карачаево-Черкесия</h3>
-						<button class="card__like" type="button"></button>
-					</div>
-				</li>
-				<li class="card">
-					<img class="card__image" src="./images/elbrus.jpg" alt="Гора Эльбрус">
-					<div class="card__text">
-						<h3 class="card__title">Гора Эльбрус</h3>
-						<button class="card__like" type="button"></button>
-					</div>
-				</li>
-				<li class="card">
-					<img class="card__image" src="./images/dombai.jpg" alt="Домбай">
-					<div class="card__text">
-						<h3 class="card__title">Домбай</h3>
-						<button class="card__like" type="button"></button>
-					</div>
-				</li>
-				<li class="card">
-					<img class="card__image" src="./images/elbrus.jpg" alt="Домбай">
-					<div class="card__text">
-						<h3 class="card__title">Домбай</h3>
-						<button class="card__like" type="button"></button>
-					</div>
-				</li>
-				<li class="card">
-					<img class="card__image" src="./images/dombai.jpg" alt="Гора Эльбрус">
-					<div class="card__text">
-						<h3 class="card__title">Гора Эльбрус</h3>
-						<button class="card__like" type="button"></button>
-					</div>
-				</li>
-				<li class="card">
-					<img class="card__image" src="./images/karachaevsk.jpg" alt="Карачаево-Черкесия">
-					<div class="card__text">
-						<h3 class="card__title">Карачаево-Черкесия</h3>
-						<button class="card__like" type="button"></button>
-					</div>
-				</li> -->
 			</ul>
 		</section>
 	</main>
 	<footer class="footer">
 		<p class="footer__copyright">© 2023 Mesto Russia</p>
 	</footer>
-	<script src="./index.js"></script>
+	<script src="./scripts/index.js"></script>
 </body>
 </html>

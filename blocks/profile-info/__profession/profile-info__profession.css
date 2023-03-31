@@ -4,6 +4,10 @@
 	line-height: 21.78px;
 	margin: 0;
 	padding: 0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-width: 85%;
 }
 
 @media all and (max-width: 500px) {
