@@ -34,4 +34,10 @@
 @import url(../blocks/popup/__image/popup__image.css);
 @import url(../blocks/popup/__text/popup__text.css);
 @import url(../blocks/popup/__container-image/popup__container-image.css);
-@import url(../blocks/popup/_opened-image/popup_opened-image.css);
+@import url(../blocks/popup/_form/popup_form_opened-image.css);
+@import url(../blocks/popup/_form/popup_form_edit.css);
+@import url(../blocks/popup/_form/popup_form_add.css);
+@import url(../blocks/popup/__field/_belong/popup__field_belong_name.css);
+@import url(../blocks/popup/__field/_belong/popup__field_belong_note.css);
+@import url(../blocks/popup/__form/_belong/popup__form_belong_card.css);
+@import url(../blocks/popup/__form/_belong/popup__form_belong_profile.css);

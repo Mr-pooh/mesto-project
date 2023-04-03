@@ -20,33 +20,33 @@
 			</div>
 			<button class="profile__add-button" type="button"></button>
 		</section>
-		<div class="popup">
+		<div class="popup popup_form_edit">
 			<div class="popup__container">
-				<form class="popup__form" name="form-info">
+				<form class="popup__form popup__form_belong_profile" name="form-info">
 					<h2 class="popup__title">Редактировать профиль</h2>
 					<fieldset class="popup__fields">
-						<input class="popup__field" type="text" value="Жак-Ив Кусто" placeholder="Имя">
-						<input class="popup__field" type="text" value="Исследователь океана" placeholder="О себе">
+						<input class="popup__field popup__field_belong_name" type="text" value="Жак-Ив Кусто" placeholder="Имя">
+						<input class="popup__field popup__field_belong_note" type="text" value="Исследователь океана" placeholder="О себе">
 					</fieldset>
 					<button class="popup__button-save" type="submit" value="save">Сохранить</button>
 				</form>
 				<button class="popup__button-close" type="button" value="close"></button>
 			</div>
 		</div>
-		<div class="popup">
+		<div class="popup popup_form_add">
 			<div class="popup__container">
-				<form class="popup__form" name="form-create">
+				<form class="popup__form popup__form_belong_card" name="form-create">
 					<h2 class="popup__title">Новое место</h2>
 					<fieldset class="popup__fields">
-						<input class="popup__field" type="text" value="" placeholder="Название">
-						<input class="popup__field" type="url" value="" placeholder="Ссылка на страницу">
+						<input class="popup__field popup__field_belong_name" type="text" value="" placeholder="Название">
+						<input class="popup__field popup__field_belong_note" type="url" value="" placeholder="Ссылка на страницу">
 					</fieldset>
 					<button class="popup__button-save" type="submit" value="save">Создать</button>
 				</form>
 				<button class="popup__button-close" type="button" value="close"></button>
 			</div>
 		</div>
-		<div class="popup popup_opened-image">
+		<div class="popup popup_form_opened-image">
 			<div class="popup__container-image">
 				<img class="popup__image" src="#" alt="">
 				<button class="popup__button-close" type="button" value="close"></button>
@@ -71,6 +71,7 @@
 	<footer class="footer">
 		<p class="footer__copyright">© 2023 Mesto Russia</p>
 	</footer>
+	<script src="./scripts/card.js"></script>
 	<script src="./scripts/index.js"></script>
 </body>
 </html>
