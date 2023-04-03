@@ -16,9 +16,6 @@ function closePopup(item) {
 buttonAdd.addEventListener('click', () => {
 	openPopup(popupAdd);
 });
-/* buttonInfo.addEventListener('click', () => {
-	openPopup(popupEdit);
-}); */
 
 const buttonsClose = document.querySelectorAll('.popup__button-close');
 buttonsClose.forEach(item => {
@@ -26,24 +23,30 @@ buttonsClose.forEach(item => {
 		closePopup(item.closest('.popup'));
 	});
 })
- 
+
+
+
+
 
 const inputName = document.querySelector('.profile-info__name');
 const inputJob = document.querySelector('.profile-info__profession');
 const popupFormInfo = document.querySelector('.popup__form_belong_profile');
 const popupSave = popupFormInfo.querySelector('.popup__button-save');
+const fieldName = popupFormInfo.querySelector('.popup__field_belong_name');
+const fieldNote = popupFormInfo.querySelector('.popup__field_belong_note');
+
+buttonInfo.addEventListener('click', () => {
+ openPopup(popupEdit);
+ inputName.textContent = `${fieldName.value}`;
+ inputJob.textContent = `${fieldNote.value}`;
+});
 
 function submitFormInfo(evt) {
 	evt.preventDefault();
-	buttonInfo.addEventListener('click', () => {
-		openPopup(popupEdit);
-	});
-	const fieldName = popupFormInfo.querySelector('.popup__field_belong_name');
-	const fieldNote = popupFormInfo.querySelector('.popup__field_belong_note');
-	fieldName.textContent = inputName.value;
-	fieldNote.textContent = inputJob.value;
 	inputName.textContent = `${fieldName.value}`;
 	inputJob.textContent = `${fieldNote.value}`;
+	fieldName.textContent = inputName.value;
+	fieldNote.textContent = inputJob.value;
 	closePopup(popupEdit);
 }
 popupFormInfo.addEventListener('submit', submitFormInfo);
@@ -96,8 +99,8 @@ function handleCard(evt) {
 	const popupNote = popupFormCreate.querySelector('.popup__field_belong_note')
 
 	cardsContainer.prepend(createCardTemplate(popupNote.value, popupName.value));
-	closePopup(popupAdd);
 	popupFormCreate.reset();
+	closePopup(popupAdd);
 };
 
 popupFormCreate.addEventListener('submit', handleCard);
