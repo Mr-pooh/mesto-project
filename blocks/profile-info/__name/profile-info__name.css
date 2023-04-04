@@ -16,10 +16,10 @@
 	.profile-info__name {
 		font-size: 27px;
 		line-height: 32.68px;
-		padding-left: 30px;
-		max-width: 82%;
+		padding-left: 17px;
+		max-width: 62%;
     min-height: auto;
-    min-width: 82%;
+    min-width: 62%;
 		text-align: center;
 	}
 }

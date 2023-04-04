@@ -31,7 +31,6 @@ buttonsClose.forEach(item => {
 const inputName = document.querySelector('.profile-info__name');
 const inputJob = document.querySelector('.profile-info__profession');
 const popupFormInfo = document.querySelector('.popup__form_belong_profile');
-const popupSave = popupFormInfo.querySelector('.popup__button-save');
 const fieldName = popupFormInfo.querySelector('.popup__field_belong_name');
 const fieldNote = popupFormInfo.querySelector('.popup__field_belong_note');
 
@@ -43,8 +42,8 @@ buttonInfo.addEventListener('click', () => {
 
 function submitFormInfo(evt) {
 	evt.preventDefault();
-	inputName.textContent = `${fieldName.value}`;
-	inputJob.textContent = `${fieldNote.value}`;
+/* 	inputName.textContent = `${fieldName.value}`;   //Когда этот этих двух строк нет, поля заполняются только после того, как мы снова открываем попад для редактирования
+	inputJob.textContent = `${fieldNote.value}`; */		//Поэтому я их и не убирал
 	fieldName.textContent = inputName.value;
 	fieldNote.textContent = inputJob.value;
 	closePopup(popupEdit);
@@ -55,22 +54,24 @@ popupFormInfo.addEventListener('submit', submitFormInfo);
 
 const cardTemplate = document.querySelector('#card').content;
 const cardsContainer = document.querySelector('.cards');
+const popupImage = popupZoom.querySelector('.popup__image');
+const popupText = popupZoom.querySelector('.popup__text');
 
 function createCardTemplate(link, text) {
 	const cardCloneElement = cardTemplate.querySelector('.card').cloneNode(true);
 	const buttonDelete = cardCloneElement.querySelector('.card__close');
 	const cardImage = cardCloneElement.querySelector('.card__image');
 	const cardTitle = cardCloneElement.querySelector('.card__title');
-	const popupImage = popupZoom.querySelector('.popup__image');
-	const popupText = popupZoom.querySelector('.popup__text');
+
 
 	cardImage.src = `${link}`;
-	cardImage.setAttribute('alt', `${text}`);
+	cardImage.alt = `${text}`;
 	cardTitle.textContent = `${text}`;
 
 	cardImage.addEventListener('click', ()=> {
 		openPopup(popupZoom);
 		popupImage.src = `${cardImage.src}`;
+		popupImage.alt = `${cardTitle.textContent}`;
 		popupText.textContent = `${cardTitle.textContent}`
 	});
 
@@ -91,13 +92,11 @@ initialCards.forEach(item => {
 });
 
 const popupFormCreate = document.querySelector('.popup__form_belong_card');
-const popupButtonCreate = popupFormCreate.querySelector('.popup__button-save');
+const popupName = popupFormCreate.querySelector('.popup__field_belong_name');
+const popupNote = popupFormCreate.querySelector('.popup__field_belong_note');
 
 function handleCard(evt) {
 	evt.preventDefault();
-	const popupName = popupFormCreate.querySelector('.popup__field_belong_name');
-	const popupNote = popupFormCreate.querySelector('.popup__field_belong_note')
-
 	cardsContainer.prepend(createCardTemplate(popupNote.value, popupName.value));
 	popupFormCreate.reset();
 	closePopup(popupAdd);

@@ -3,7 +3,6 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	max-width: 336px;
-	min-width: 336px;
 	height: 70%;
 	align-items: center;
 	column-gap: 24px;
@@ -15,9 +14,17 @@
 @media all and (max-width: 500px) {
 	.profile-info {
 		row-gap: 7px;
-		column-gap: 10px;
+		column-gap: 0px;
 		padding: 0;
 		justify-content: center;
 		padding-top: 26px;
+	}
+}
+
+@media screen and (min-width: 500px) and (max-width: 950px) {
+	.profile-info {
+		column-gap: 0px;
+		padding: 0;
+		max-width: 50%;
 	}
 }

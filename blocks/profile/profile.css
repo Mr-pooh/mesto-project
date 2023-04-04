@@ -6,11 +6,18 @@
 	align-items: center;
 	color: #fff;
 	padding-bottom: 51px;
+	align-content: center;
 }
 
 @media all and (max-width: 500px) {
 	.profile {
 		flex-direction: column;
 		padding-bottom: 36px;
+	}
+}
+
+@media screen and (min-width: 500px) and (max-width: 950px) {
+	.profile {
+		flex-wrap: nowrap;
 	}
 }
