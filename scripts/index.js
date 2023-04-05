@@ -28,24 +28,22 @@ buttonsClose.forEach(item => {
 
 
 
-const inputName = document.querySelector('.profile-info__name');
-const inputJob = document.querySelector('.profile-info__profession');
+const profileName = document.querySelector('.profile-info__name');
+const profileJob = document.querySelector('.profile-info__profession');
 const popupFormInfo = document.querySelector('.popup__form_belong_profile');
-const fieldName = popupFormInfo.querySelector('.popup__field_belong_name');
-const fieldNote = popupFormInfo.querySelector('.popup__field_belong_note');
+const inputName = popupFormInfo.querySelector('.popup__field_belong_name');
+const inputNote = popupFormInfo.querySelector('.popup__field_belong_note');
 
 buttonInfo.addEventListener('click', () => {
  openPopup(popupEdit);
- inputName.textContent = `${fieldName.value}`;
- inputJob.textContent = `${fieldNote.value}`;
+ inputName.value = profileName.textContent;
+ inputNote.value = profileJob.textContent;
 });
 
 function submitFormInfo(evt) {
 	evt.preventDefault();
-/* 	inputName.textContent = `${fieldName.value}`;   //Когда этот этих двух строк нет, поля заполняются только после того, как мы снова открываем попад для редактирования
-	inputJob.textContent = `${fieldNote.value}`; */		//Поэтому я их и не убирал
-	fieldName.textContent = inputName.value;
-	fieldNote.textContent = inputJob.value;
+	profileName.textContent = inputName.value;
+	profileJob.textContent = inputNote.value;
 	closePopup(popupEdit);
 }
 popupFormInfo.addEventListener('submit', submitFormInfo);
