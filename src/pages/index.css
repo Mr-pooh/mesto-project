@@ -41,3 +41,6 @@
 @import url(../blocks/popup/__field/_belong/popup__field_belong_note.css);
 @import url(../blocks/popup/__form/_belong/popup__form_belong_card.css);
 @import url(../blocks/popup/__form/_belong/popup__form_belong_profile.css);
+@import url(../blocks/popup/__field-error/popup__field-error.css);
+@import url(../blocks/popup/__field-error/_active/popup__field-error_active.css);
+@import url(../blocks/popup/__field/_type/popup__field_type_error.css);

@@ -21,6 +21,19 @@
 	cursor: pointer;
 }
 
+.popup__button-save:disabled {
+	opacity: .2;
+	background-color: #fff;
+	color: #000;
+	border: 1px solid #000000;
+	border-radius: 2px;	
+}
+
+.popup__button-save:disabled:hover {
+	opacity: .2;
+	cursor: default;
+}
+
 @media all and (max-width: 500px) {
 	.popup__button-save {
 		font-size: 14px;
