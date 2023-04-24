@@ -1,19 +1,19 @@
 
-const showInputError = (formElement, inputElement, errorMessage) => {
+const showInputError = (formElement, inputElement, errorMessage, inputErrorClass, errorClass) => {
 	const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-	inputElement.classList.add('popup__field_type_error');
+	inputElement.classList.add(inputErrorClass);
 	errorElement.textContent = errorMessage;
-	errorElement.classList.add('popup__field-error_active');
+	errorElement.classList.add(errorClass);
 };
 
-const hideInputError = (formElement, inputElement) => {
+const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
 	const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-	inputElement.classList.remove('popup__field_type_error');
-	errorElement.classList.remove('popup__field-error_active');
+	inputElement.classList.remove(inputErrorClass);
+	errorElement.classList.remove(errorClass);
 	errorElement.textContent = '';
 };
 
-const checkInputValidity = (formElement, inputElement) => {
+const checkInputValidity = (formElement, inputElement, {inputErrorClass, errorClass}) => {
 	if (inputElement.validity.patternMismatch) {
 		// данные атрибута доступны у элемента инпута через ключевое слово dataset.
 		// обратите внимание, что в js имя атрибута пишется в camelCase (да-да, в
@@ -25,33 +25,36 @@ const checkInputValidity = (formElement, inputElement) => {
 	}
 
 	if (!inputElement.validity.valid) {
-		showInputError(formElement, inputElement, inputElement.validationMessage);
+		showInputError(formElement, inputElement, inputElement.validationMessage, inputErrorClass, errorClass);
 	} else {
-		hideInputError(formElement, inputElement);
+		hideInputError(formElement, inputElement, inputErrorClass, errorClass);
 	}
 };
 
-const setEventListeners = (formElement) => {
-	const inputList = Array.from(formElement.querySelectorAll('.popup__field'));
-	const buttonElement = formElement.querySelector('.popup__button-save');
+const setEventListeners = (formElement, {inputSelector, submitButtonSelector, ...arr}) => {
+	const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+	const buttonElement = formElement.querySelector(submitButtonSelector);
 	toggleButtonState(inputList, buttonElement);
+	formElement.addEventListener('reset', () => {
+    disableButton(buttonElement);
+  });
 	inputList.forEach((inputElement) => {
 		inputElement.addEventListener('input', () => {
-			checkInputValidity(formElement, inputElement);
+			checkInputValidity(formElement, inputElement, arr);
 		
 			toggleButtonState(inputList, buttonElement);
 		});
 	});
 };
 
-const enableValidation = () => {
-	const formList = Array.from(document.querySelectorAll('.popup__form'));
+const enableValidation = ({formSelector, ...rest}) => {
+	const formList = Array.from(document.querySelectorAll(formSelector));
 	formList.forEach((formElement) => {
 		formElement.addEventListener('submit', function (evt) {
 			evt.preventDefault();
 			
 		});
-		setEventListeners(formElement);
+		setEventListeners(formElement, rest);
 	});
 };
 
@@ -61,9 +64,14 @@ function hasInvalidInput(inputList) {
 	})
 }
 
+
+function disableButton (buttonElement) {
+	buttonElement.disabled = true;
+}
+
 function toggleButtonState(inputList, buttonElement) {
 	if(hasInvalidInput(inputList)) {
-		buttonElement.disabled = true;
+		disableButton(buttonElement);
 	}
 	else {
 		buttonElement.disabled = false;

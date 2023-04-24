@@ -9,16 +9,18 @@ function openPopup(item) {
 
 function closePopupEscape(evt) {
 	evt.preventDefault();
-	if(evt.key !== 'Escape') {
+	if(evt.key === 'Escape') {
+		const openedPopup = document.querySelector('.popup_opened');
+		openedPopup && closePopup(openedPopup);
 	}
-	else if(document.querySelector('.popup_opened')){
+	/* else if(document.querySelector('.popup_opened')){
 		closePopup(document.querySelector('.popup_opened'))
-	}	
+	} */	
 }
 
 function closeOverlay(evt) {
 	if(evt.target.classList.contains('popup')) {
-		evt.target.classList.remove('popup_opened')
+		closePopup(evt.target);
 	}
 }
 

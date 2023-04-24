@@ -60,6 +60,8 @@ function createCardTemplate(link, text) {
 	const buttonDelete = cardCloneElement.querySelector('.card__close');
 	const cardImage = cardCloneElement.querySelector('.card__image');
 	const cardTitle = cardCloneElement.querySelector('.card__title');
+
+	const cardLike = cardCloneElement.querySelector('.card__like');
 	
 	
 	cardImage.src = `${link}`;
@@ -78,10 +80,8 @@ function createCardTemplate(link, text) {
 		deleteItem.remove();
 	});
 	
-	cardCloneElement.addEventListener('click', evt => {
-		if(evt.target.classList.contains('card__like')){
-			evt.target.classList.toggle('card__like_active');
-		}
+	cardLike.addEventListener('click', evt => {
+		evt.target.classList.toggle('card__like_active');
 	});
 	
 	return cardCloneElement;
