@@ -9,6 +9,7 @@
 	row-gap: 7px;
 	padding-left: 32px;
 	padding-top: 4px;
+	min-width: 40%;
 }
 
 @media all and (max-width: 500px) {

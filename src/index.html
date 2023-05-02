@@ -12,11 +12,14 @@
 	</header>
 	<main class="content">
 		<section class="profile">
-			<img class="profile__image" src="<%=require('./images/avatar.jpg')%>" alt="Аватар">
+			<div class="profile__image-container">
+				<img class="profile__image" src="#" alt="Аватар">
+
+			</div>
 			<div class="profile-info">
-				<h1 class="profile-info__name">Жак-Ив Кусто</h1>
+				<h1 class="profile-info__name"></h1>
 				<button class="profile-info__edit-button" type="button"></button>	
-				<p class="profile-info__profession">Исследователь океана</p>
+				<p class="profile-info__profession"></p>
 			</div>
 			<button class="profile__add-button" type="button"></button>
 		</section>
@@ -50,6 +53,19 @@
 				<button class="popup__button-close" type="button" value="close"></button>
 			</div>
 		</div>
+		<div class="popup popup_form_avatar">
+			<div class="popup__container popup__container_avatar">
+				<form class="popup__form popup__form_belong_avatar" name="form-avatar" novalidate>
+					<h2 class="popup__title">Обновить аватар</h2>
+					<fieldset class="popup__fields">
+						<input class="popup__field popup__field_belong_note" id="url-input" type="url" name="input-url" value="" placeholder="Ссылка на страницу" required>
+						<span class="popup__field-error url-input-error"></span>
+					</fieldset>
+					<button class="popup__button-save" type="submit" value="save">Сохранить</button>
+				</form>
+				<button class="popup__button-close" type="button" value="close"></button>
+			</div>
+		</div>
 		<div class="popup popup_form_opened-image">
 			<div class="popup__container-image">
 				<img class="popup__image" src="#" alt="">
@@ -63,7 +79,10 @@
 				<img class="card__image" src="#" alt="">
 				<div class="card__text">
 					<h3 class="card__title"></h3>
-					<button class="card__like" type="button"></button>
+					<div class="card__continer-like">
+						<button class="card__like" type="button"></button>
+						<p class="card__like-sum"></p>
+					</div>
 				</div>
 			</li>
 		</template>

@@ -1,38 +1,9 @@
 import {
-	openPopup,		
-	closePopup
+	openPopup
 } from './utils.js';
 
-import {
-	popupAdd
-} from './modal.js'
 
-const initialCards = [
-	{
-		name: 'Архыз',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-	},
-	{
-		name: 'Челябинская область',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-	},
-	{
-		name: 'Иваново',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-	},
-	{
-		name: 'Камчатка',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-	},
-	{
-		name: 'Холмогорский район',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-	},
-	{
-		name: 'Байкал',
-		link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-	}
-];
+
 
 const cardTemplate = document.querySelector('#card').content;
 const cardsContainer = document.querySelector('.cards');
@@ -44,29 +15,31 @@ const popupFormCreate = document.querySelector('.popup__form_belong_card');
 const popupName = popupFormCreate.querySelector('.popup__field_belong_name');
 const popupNote = popupFormCreate.querySelector('.popup__field_belong_note');
 
-function handleCard(evt) {
-	evt.preventDefault();
-	cardsContainer.prepend(createCardTemplate(popupNote.value, popupName.value));
-	popupFormCreate.reset();
-	closePopup(popupAdd);
-};
+
+import {
+	deleteCard,
+	addLike
+} from './api.js'
 
 
-
-
-
-function createCardTemplate(link, text) {
+function createCardTemplate(link, text, sum, buttonSwap, cardId, id) {
 	const cardCloneElement = cardTemplate.querySelector('.card').cloneNode(true);
 	const buttonDelete = cardCloneElement.querySelector('.card__close');
 	const cardImage = cardCloneElement.querySelector('.card__image');
 	const cardTitle = cardCloneElement.querySelector('.card__title');
-
+	const cardLikeSumm = cardCloneElement.querySelector('.card__like-sum');
 	const cardLike = cardCloneElement.querySelector('.card__like');
 	
 	
 	cardImage.src = `${link}`;
 	cardImage.alt = `${text}`;
 	cardTitle.textContent = `${text}`;
+	cardLikeSumm.textContent = `${sum}`;
+	id.forEach((item) => {
+		if(item._id === '18fe758bd624620838d3446e'){
+			cardLike.classList.add('card__like_active');
+		}
+	})
 	
 	cardImage.addEventListener('click', ()=> {
 		openPopup(popupZoom);
@@ -75,20 +48,62 @@ function createCardTemplate(link, text) {
 		popupText.textContent = `${cardTitle.textContent}`
 	});
 	
+	buttonDelete.disabled = buttonSwap;
+
 	buttonDelete.addEventListener('click', () => {
 		const deleteItem = buttonDelete.closest('.card');
+		deleteCard(cardId)
+		.then((res) => {
+			if(res.ok){
+				return res.json();
+			}
+			return Promise.reject(`Что-то пошло не так: ${res.status}`)
+		})
+	
+		.catch(err => console.log(err));
 		deleteItem.remove();
 	});
+
+
+
 	
-	cardLike.addEventListener('click', evt => {
-		evt.target.classList.toggle('card__like_active');
-	});
+cardLike.addEventListener('click', evt => {
+	if(cardLike.classList.contains('card__like_active')){
+		addLike(cardId, 'DELETE')
+			.then((res) => {
+				if(res.ok){
+					return res.json();
+				}
+				return Promise.reject(`Что-то пошло не так: ${res.status}`)
+			})
+			.then((item) => {
+				evt.target.classList.remove('card__like_active');
+				cardLikeSumm.textContent = item.likes.length;
+			})
+			.catch(err => console.log(err));
+	} else {
+		addLike(cardId, 'PUT')
+	.then((res) => {
+		if(res.ok){
+			return res.json();
+		}
+		return Promise.reject(`Что-то пошло не так: ${res.status}`)
+	})
+	.then((result) => {
+		evt.target.classList.add('card__like_active');
+		cardLikeSumm.textContent = result.likes.length;
+	})
+	.catch(err => console.log(err));
+	}
+})
+		
+
 	
 	return cardCloneElement;
 };
 
 
 
-export { handleCard, popupFormCreate, createCardTemplate, initialCards, cardsContainer }
+export { popupFormCreate, createCardTemplate, cardsContainer, popupName, popupNote }
 
 

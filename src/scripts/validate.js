@@ -15,9 +15,6 @@ const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) 
 
 const checkInputValidity = (formElement, inputElement, {inputErrorClass, errorClass}) => {
 	if (inputElement.validity.patternMismatch) {
-		// данные атрибута доступны у элемента инпута через ключевое слово dataset.
-		// обратите внимание, что в js имя атрибута пишется в camelCase (да-да, в
-		// HTML мы писали в kebab-case, это не опечатка)
 			inputElement.setCustomValidity(inputElement.dataset.errorMessage);
 	} 
 	else {
@@ -50,10 +47,6 @@ const setEventListeners = (formElement, {inputSelector, submitButtonSelector, ..
 const enableValidation = ({formSelector, ...rest}) => {
 	const formList = Array.from(document.querySelectorAll(formSelector));
 	formList.forEach((formElement) => {
-		formElement.addEventListener('submit', function (evt) {
-			evt.preventDefault();
-			
-		});
 		setEventListeners(formElement, rest);
 	});
 };

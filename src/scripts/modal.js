@@ -1,6 +1,4 @@
 
-import { closePopup } from "./utils.js";
-
 
 const popupEdit = document.querySelector('.popup_form_edit');
 const buttonInfo = document.querySelector('.profile-info__edit-button');
@@ -10,14 +8,11 @@ const popupFormInfo = document.querySelector('.popup__form_belong_profile');
 const inputName = popupFormInfo.querySelector('.popup__field_belong_name');
 const inputNote = popupFormInfo.querySelector('.popup__field_belong_note');
 
-
-function submitFormInfo(evt) {
-	evt.preventDefault();
-	profileName.textContent = inputName.value;
-	profileJob.textContent = inputNote.value;
-	closePopup(popupEdit);
-}
-
+const popupAvatar = document.querySelector('.popup_form_avatar');
+const avatarImage = document.querySelector('.profile__image');
+const buttonImage = document.querySelector('.profile__image-container');
+const popupFormAvatar = document.querySelector('.popup__form_belong_avatar');
+const inputAvatar = popupFormAvatar.querySelector('.popup__field_belong_note');
 
 
 const popupAdd = document.querySelector('.popup_form_add');
@@ -29,11 +24,15 @@ export {
 	popupEdit,
 	popupFormInfo, 
 	buttonInfo, 
-	submitFormInfo, 
 	profileName, 
 	profileJob, 
 	inputName, 
 	inputNote, 
 	buttonAdd, 
-	popupAdd 
+	popupAdd,
+	popupAvatar,
+	avatarImage,
+	popupFormAvatar,
+	inputAvatar,
+	buttonImage
 };

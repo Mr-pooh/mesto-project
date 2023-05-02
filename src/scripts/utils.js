@@ -13,9 +13,6 @@ function closePopupEscape(evt) {
 		const openedPopup = document.querySelector('.popup_opened');
 		openedPopup && closePopup(openedPopup);
 	}
-	/* else if(document.querySelector('.popup_opened')){
-		closePopup(document.querySelector('.popup_opened'))
-	} */	
 }
 
 function closeOverlay(evt) {
@@ -33,4 +30,16 @@ function closePopup(item) {
 
 
 
-export { openPopup, closeOverlay, closePopup, closePopupEscape }
+function renderLoading(isLoading, popupForm, word) {
+	if(isLoading){
+		return popupForm.querySelector('.popup__button-save').textContent = 'Сохранение...';
+		
+	}
+	else {
+		return popupForm.querySelector('.popup__button-save').textContent = `${word}`;
+	}
+}
+
+
+
+export { openPopup, closeOverlay, closePopup, closePopupEscape, renderLoading }
