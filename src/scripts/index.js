@@ -13,13 +13,16 @@ import {
 	popupAvatar,
 	avatarImage,
 	buttonImage,
-	popupFormAvatar
+	popupFormAvatar,
+	inputAvatar
 } from './modal.js';
 
 import { 
 	popupFormCreate,
 	cardsContainer,
-	createCardTemplate
+	createCardTemplate,
+	popupName,
+	popupNote
 } from './card.js';
 
 import {
@@ -51,16 +54,11 @@ buttonImage.addEventListener('click', () => {
 popupFormAvatar.addEventListener('submit', (evt) => {
 	evt.preventDefault();
 	renderLoading(true, popupFormAvatar, 'Сохранить');
-	swapImage()
-	.then((res) => {
-		if(res.ok){
-			return res.json();
-		}
-		return Promise.reject(`Что-то не так: ${res.status}`)
-	})
+	swapImage(inputAvatar)
 	.then((res) => {
 		avatarImage.src = res.avatar;
 		closePopup(popupAvatar);
+		popupFormAvatar.reset();
 	})
 	.catch(error => console.log(error))
 	.finally(()=> {
@@ -71,10 +69,8 @@ popupFormAvatar.addEventListener('submit', (evt) => {
 
 buttonInfo.addEventListener('click', (evt) => {
 	openPopup(popupEdit);
-	
 	inputName.value = profileName.textContent;
 	inputNote.value = profileJob.textContent;
-	
  });
 
 const closeButtons = document.querySelectorAll('.popup__button-close');  
@@ -100,58 +96,32 @@ enableValidation({
   errorClass: 'popup__field-error_active'
 }); 
 
-downloadProfileInfo()
-.then((res) => {
-	if(res.ok){
-		return res.json();
-	}
-	return Promise.reject(`Что-то пошло не так: ${res.status}`);
-})
-.then((result) => {
-	profileName.textContent = result.name;
-	profileJob.textContent = result.about;
-	avatarImage.src = result.avatar;
+
+Promise.all([
+	downloadProfileInfo(),
+	downloadCards()
+])
+.then(([info, initialCards]) => {
+	profileName.textContent = info.name;
+	profileJob.textContent = info.about;
+	avatarImage.src = info.avatar;
+	
+	return initialCards.forEach(item => {
+		const boolen = item.owner._id === info._id;
+		cardsContainer.append(createCardTemplate(item.link, item.name, item.likes.length, !boolen, item._id, item.likes, info._id));
+	});
 })
 .catch((error) => {
 	return console.log(error);
 });
 
 
-downloadCards()
-.then((res) => {
-	if(res.ok){
-		return res.json()
-	}
-	return Promise.reject(`Что-то пошло не так: ${res.status}`);
-})
-.then((result) => {
-	return result.forEach(item => {
-		const boolen = item.owner._id === '18fe758bd624620838d3446e';
-		cardsContainer.append(createCardTemplate(item.link, item.name, item.likes.length, !boolen, item._id, item.likes));
-		
-	});
-})
-.catch(error => {
-console.log(error)
-});
-
-
-
 popupFormCreate.addEventListener('submit', (evt) => {
 	evt.preventDefault();
 	renderLoading(true, popupFormCreate, 'Создать');
-	addCardOnServer()
-	.then((res) => {
-		if(res.ok){
-			return res.json();
-		}
-		return Promise.reject(`Что-то не так: ${res.status}`)
-	})
+	addCardOnServer(popupName, popupNote)
 	.then((item) => {
-	 const boolen = () => {
-		item.owner._id === '18fe758bd624620838d3446e';
-	 }
-	 cardsContainer.prepend(createCardTemplate(item.link, item.name, item.likes.length, !boolen, item._id, item.likes));
+	 cardsContainer.prepend(createCardTemplate(item.link, item.name, item.likes.length, false, item._id, item.likes, info._id));
 	 popupFormCreate.reset();
 	 closePopup(popupAdd);
 })
@@ -166,13 +136,7 @@ popupFormCreate.addEventListener('submit', (evt) => {
 popupFormInfo.addEventListener('submit', (evt) => {
 evt.preventDefault();
 	renderLoading(true, popupFormInfo, 'Сохранить');
-	swapTextProfile()
-	.then((res) => {
-		if(res.ok){
-			return res.json();
-		}
-		return Promise.reject(`Что-то пошло не по плану: ${res.status}`)
-	})
+	swapTextProfile(inputName, inputNote)
 	.then((result) => {
 		profileName.textContent = result.name;
 		profileJob.textContent = result.about;

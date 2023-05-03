@@ -22,7 +22,7 @@ import {
 } from './api.js'
 
 
-function createCardTemplate(link, text, sum, buttonSwap, cardId, id) {
+function createCardTemplate(link, text, sum, buttonSwap, cardId, idLike, idPerson) {
 	const cardCloneElement = cardTemplate.querySelector('.card').cloneNode(true);
 	const buttonDelete = cardCloneElement.querySelector('.card__close');
 	const cardImage = cardCloneElement.querySelector('.card__image');
@@ -35,8 +35,8 @@ function createCardTemplate(link, text, sum, buttonSwap, cardId, id) {
 	cardImage.alt = `${text}`;
 	cardTitle.textContent = `${text}`;
 	cardLikeSumm.textContent = `${sum}`;
-	id.forEach((item) => {
-		if(item._id === '18fe758bd624620838d3446e'){
+	idLike.forEach((item) => {
+		if(item._id === idPerson){
 			cardLike.classList.add('card__like_active');
 		}
 	})
@@ -53,16 +53,11 @@ function createCardTemplate(link, text, sum, buttonSwap, cardId, id) {
 	buttonDelete.addEventListener('click', () => {
 		const deleteItem = buttonDelete.closest('.card');
 		deleteCard(cardId)
-		.then((res) => {
-			if(res.ok){
-				return res.json();
-			}
-			return Promise.reject(`Что-то пошло не так: ${res.status}`)
-		})
-	
-		.catch(err => console.log(err));
+		.then(() => {
 		deleteItem.remove();
-	});
+		})
+		.catch(err => console.log(err));
+		});
 
 
 
@@ -70,25 +65,13 @@ function createCardTemplate(link, text, sum, buttonSwap, cardId, id) {
 cardLike.addEventListener('click', evt => {
 	if(cardLike.classList.contains('card__like_active')){
 		addLike(cardId, 'DELETE')
-			.then((res) => {
-				if(res.ok){
-					return res.json();
-				}
-				return Promise.reject(`Что-то пошло не так: ${res.status}`)
-			})
 			.then((item) => {
 				evt.target.classList.remove('card__like_active');
 				cardLikeSumm.textContent = item.likes.length;
 			})
 			.catch(err => console.log(err));
 	} else {
-		addLike(cardId, 'PUT')
-	.then((res) => {
-		if(res.ok){
-			return res.json();
-		}
-		return Promise.reject(`Что-то пошло не так: ${res.status}`)
-	})
+	addLike(cardId, 'PUT')
 	.then((result) => {
 		evt.target.classList.add('card__like_active');
 		cardLikeSumm.textContent = result.likes.length;

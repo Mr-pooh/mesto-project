@@ -1,13 +1,3 @@
-import {
-	popupName,
-	popupNote,
-} from './card.js'
-
-import {
-	inputName,
-	inputNote,
-	inputAvatar
-} from './modal.js'
 
 
 const config = {
@@ -18,15 +8,16 @@ const config = {
 	}
 }
 
-function swapTextProfile() {
+function swapTextProfile(nikname, job) {
 	return fetch(`${config.baseUrl}/users/me`, {
 		method: 'PATCH',
 		headers: config.headers,
 		body: JSON.stringify({
-			name: inputName.value,
-			about: inputNote.value
+			name: nikname.value,
+			about: job.value
 		})
 	})
+	.then(res => returnError(res))
 }
 
 
@@ -34,12 +25,14 @@ function downloadProfileInfo(){
 	return fetch(`${config.baseUrl}/users/me`, {
 		headers: config.headers
 	})
+	.then(res => returnError(res))
 }
 
 function downloadCards() {
 	return fetch(`${config.baseUrl}/cards`, {
 		headers: config.headers
 	})
+	.then(res => returnError(res))
 }
 
 function deleteCard(cardId) {
@@ -47,17 +40,19 @@ function deleteCard(cardId) {
 	method: 'DELETE',
 	headers: config.headers
 	})
+	.then(res => returnError(res))
 }
 
-function addCardOnServer(){
+function addCardOnServer(namestate, linkimg){
 	return fetch(`${config.baseUrl}/cards`, {
 		method: 'POST',
 		headers: config.headers,
 		 body: JSON.stringify({
-			 name: popupName.value,
-			 link: popupNote.value
+			 name: namestate.value,
+			 link: linkimg.value
 		 })
 	 })
+	 .then(res => returnError(res))
  }
 
 
@@ -66,18 +61,25 @@ function addCardOnServer(){
 	method: `${meth}`,
 	headers: config.headers
 	})
+	.then(res => returnError(res))
  }
 
- function swapImage() {
+ function swapImage(avatarimg) {
 	return fetch(`${config.baseUrl}/users/me/avatar`, {
 		method: `PATCH`,
 		headers: config.headers,
 		body: JSON.stringify({
-			avatar: inputAvatar.value
+			avatar: avatarimg.value
 		})
 	})
+	.then(res => returnError(res))
  }
 
-
+ function returnError(item) {
+	if(item.ok){
+		return item.json();
+	}
+	return Promise.reject(`Что-то не так: ${item.status}`);
+}
 
 export { addCardOnServer, swapTextProfile, downloadCards, downloadProfileInfo, deleteCard, addLike, swapImage }
