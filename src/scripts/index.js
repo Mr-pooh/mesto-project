@@ -121,7 +121,7 @@ popupFormCreate.addEventListener('submit', (evt) => {
 	renderLoading(true, popupFormCreate, 'Создать');
 	addCardOnServer(popupName, popupNote)
 	.then((item) => {
-	 cardsContainer.prepend(createCardTemplate(item.link, item.name, item.likes.length, false, item._id, item.likes, info._id));
+	 cardsContainer.prepend(createCardTemplate(item.link, item.name, item.likes.length, false, item._id, item.likes, false));
 	 popupFormCreate.reset();
 	 closePopup(popupAdd);
 })
