@@ -26,4 +26,9 @@ class Api {
 		return fetch(`${this._baseUrl}/users/me`).then(res => returnError(res))
 	}
 
+	getSwapTextProfile() {
+		
+		return fetch(``)
+	}
+
 }
