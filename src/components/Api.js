@@ -18,7 +18,7 @@ class Api {
 		return fetch(`${this._baseUrl}/cards`, {
 			headers: this._headers
 		})
-		.then(res => _returnError(res))
+		.then(res => this._returnError(res))
 	}
 
 
@@ -26,7 +26,7 @@ class Api {
 		return fetch(`${this._baseUrl}/users/me`, {
 			headers: this._headers
 		})
-		.then(res => _returnError(res))
+		.then(res => this._returnError(res))
 	}
 
 
@@ -92,3 +92,8 @@ class Api {
 		return Promise.reject(`Что-то не так: ${item.status}`);
 	}
 }
+
+
+const api = new Api(config);
+
+export { api }
