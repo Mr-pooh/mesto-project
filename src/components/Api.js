@@ -38,7 +38,7 @@ class Api {
 				name: nikname.value,
 				about: job.value
 			})
-		}).then(res => _returnError(res))
+		}).then(res => this._returnError(res))
 	}
 
 
@@ -51,7 +51,7 @@ class Api {
 			 link: linkimg.value
 			})
 		})
-		.then(res => _returnError(res)) 	
+		.then(res => this._returnError(res)) 	
 	}
 
 
