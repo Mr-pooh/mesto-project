@@ -62,23 +62,23 @@ function createCardTemplate(link, text, sum, buttonSwap, cardId, idLike, idPerso
 
 
 	
-cardLike.addEventListener('click', evt => {
-	if(cardLike.classList.contains('card__like_active')){
-		addLike(cardId, 'DELETE')
-			.then((item) => {
-				evt.target.classList.remove('card__like_active');
-				cardLikeSumm.textContent = item.likes.length;
-			})
-			.catch(err => console.log(err));
-	} else {
-	addLike(cardId, 'PUT')
-	.then((result) => {
-		evt.target.classList.add('card__like_active');
-		cardLikeSumm.textContent = result.likes.length;
+	cardLike.addEventListener('click', evt => {
+		if(cardLike.classList.contains('card__like_active')){
+			addLike(cardId, 'DELETE')
+				.then((item) => {
+					evt.target.classList.remove('card__like_active');
+					cardLikeSumm.textContent = item.likes.length;
+				})
+				.catch(err => console.log(err));
+		} else {
+			addLike(cardId, 'PUT')
+				.then((result) => {
+					evt.target.classList.add('card__like_active');
+					cardLikeSumm.textContent = result.likes.length;
+				})
+				.catch(err => console.log(err));
+		}
 	})
-	.catch(err => console.log(err));
-	}
-})
 		
 
 	
