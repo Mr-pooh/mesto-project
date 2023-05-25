@@ -45,7 +45,8 @@ import {
 } from '../scripts/api.js'
 
 // импорт классов
-import {api} from '../components/Api.js'
+import {api} from '../components/Api.js';
+import Card from '../components/Card';
 
 
 buttonImage.addEventListener('click', () => {
@@ -112,8 +113,12 @@ Promise.all([
 	console.log('Promise.all=>initialCards', initialCards)
 	
 	return initialCards.forEach(item => {
-		const boolen = item.owner._id === info._id;
-		cardsContainer.append(createCardTemplate(item.link, item.name, item.likes.length, !boolen, item._id, item.likes, info._id));
+
+		const classCardGenerate = new Card(item, `#card`);    //заменил инициализацию карточек с помощью класса Card
+		cardsContainer.append(classCardGenerate.generate());
+
+
+/* 		const boolen = item.owner._id === info._id; */
 	});
 })
 .catch((error) => {
