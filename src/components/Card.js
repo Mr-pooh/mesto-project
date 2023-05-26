@@ -1,11 +1,13 @@
 
 
 export default class Card{
-	constructor(	data, selector	){
+	constructor(	data, selector ){
 		this._cardLink = `${data.link}`;
 		this._cardTitle = `${data.name}`;
 		this._cardLikeSum = `${data.likes.length}`;
 		this._selector = `${selector}`;
+		this._cardId = `${data._id}`;
+		this._ownerId = `${data.owner._id}`
 	}
 
 	_getElement() {
@@ -18,8 +20,10 @@ export default class Card{
 		return cardCloneElement;
 	}
 
-	generate() {
+	generate(idPerson) {
 		this._element = this._getElement();
+
+		this._element.querySelector('.card__close').disabled = this._ownerId !== idPerson;
 
 		this._setEventListeners();
 
