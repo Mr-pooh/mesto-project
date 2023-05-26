@@ -35,8 +35,8 @@ class Api {
 			method: 'PATCH',
 			headers: this._headers,
 			body: JSON.stringify({
-				name: nikname.value,
-				about: job.value
+				name: nikname,
+				about: job
 			})
 		}).then(res => this._returnError(res))
 	}
@@ -47,8 +47,8 @@ class Api {
 			method: 'POST',
 			headers: this._headers,
 			body: JSON.stringify({
-			 name: namestate.value,
-			 link: linkimg.value
+			 name: namestate,
+			 link: linkimg
 			})
 		})
 		.then(res => this._returnError(res)) 	
@@ -60,7 +60,7 @@ class Api {
 			method: 'PATCH',
 			headers: this._headers,
 			body: JSON.stringify({
-				avatar: avatarImage.value
+				avatar: avatarImage
 			})
 		})
 		.then(res => this._returnError(res))

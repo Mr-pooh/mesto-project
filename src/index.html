@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>Место</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Место</title>
 </head>
+
 <body class="page">
 	<header class="header">
 		<img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Логотип">
@@ -18,7 +20,7 @@
 			</div>
 			<div class="profile-info">
 				<h1 class="profile-info__name"></h1>
-				<button class="profile-info__edit-button" type="button"></button>	
+				<button class="profile-info__edit-button" type="button"></button>
 				<p class="profile-info__profession"></p>
 			</div>
 			<button class="profile__add-button" type="button"></button>
@@ -28,10 +30,16 @@
 				<form class="popup__form popup__form_belong_profile" name="form-info" novalidate>
 					<h2 class="popup__title">Редактировать профиль</h2>
 					<fieldset class="popup__fields">
-						<input class="popup__field popup__field_belong_name" id="name-input" type="text" name="input-name" value="Жак-Ив Кусто" placeholder="Имя" minlength="2" maxlength="40" pattern="^[a-zA-ZА-Яа-яЁё\s-]+$" data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы" required>
-						<span class="popup__field-error name-input-error"></span>
-						<input class="popup__field popup__field_belong_note" id="job-input" type="text" name="input-job" value="Исследователь океана" placeholder="О себе" minlength="2" maxlength="200" pattern="^[a-zA-ZА-Яа-яЁё\s-]+$" data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы" required>
-						<span class="popup__field-error job-input-error"></span>
+						<input class="popup__field popup__field_belong_name" id="nameInput" type="text" name="inputName" value=""
+							placeholder="Имя" minlength="2" maxlength="40" pattern="^[a-zA-ZА-Яа-яЁё\s-]+$"
+							data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
+							required>
+						<span class="popup__field-error nameInput-error"></span>
+						<input class="popup__field popup__field_belong_note" id="jobInput" type="text" name="inputJob" value=""
+							placeholder="О себе" minlength="2" maxlength="200" pattern="^[a-zA-ZА-Яа-яЁё\s-]+$"
+							data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
+							required>
+						<span class="popup__field-error jobInput-error"></span>
 					</fieldset>
 					<button class="popup__button-save" type="submit" value="save">Сохранить</button>
 				</form>
@@ -43,10 +51,14 @@
 				<form class="popup__form popup__form_belong_card" name="form-create" novalidate>
 					<h2 class="popup__title">Новое место</h2>
 					<fieldset class="popup__fields">
-						<input class="popup__field popup__field_belong_name" id="title-input" type="text" name="input-name" value="" placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-ZА-Яа-яЁё\s-]+$" data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы" required>
-						<span class="popup__field-error title-input-error"></span>
-						<input class="popup__field popup__field_belong_note" id="url-input" type="url" name="input-url" value="" placeholder="Ссылка на страницу" required>
-						<span class="popup__field-error url-input-error"></span>
+						<input class="popup__field popup__field_belong_name" id="titleInput" type="text" name="inputName" value=""
+							placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-ZА-Яа-яЁё\s-]+$"
+							data-error-message="Разрешены только латинские буквы, кириллические буквы, знаки дефиса и пробелы"
+							required>
+						<span class="popup__field-error titleInput-error"></span>
+						<input class="popup__field popup__field_belong_note" id="urlInput" type="url" name="inputUrl" value=""
+							placeholder="Ссылка на страницу" required>
+						<span class="popup__field-error urlInput-error"></span>
 					</fieldset>
 					<button class="popup__button-save" type="submit" value="save">Создать</button>
 				</form>
@@ -58,8 +70,9 @@
 				<form class="popup__form popup__form_belong_avatar" name="form-avatar" novalidate>
 					<h2 class="popup__title">Обновить аватар</h2>
 					<fieldset class="popup__fields">
-						<input class="popup__field popup__field_belong_note" id="url-input" type="url" name="input-url" value="" placeholder="Ссылка на страницу" required>
-						<span class="popup__field-error url-input-error"></span>
+						<input class="popup__field popup__field_belong_note" id="urlInputAvatar" type="url" name="inputUrl" value=""
+							placeholder="Ссылка на страницу" required>
+						<span class="popup__field-error urlInputAvatar-error"></span>
 					</fieldset>
 					<button class="popup__button-save" type="submit" value="save">Сохранить</button>
 				</form>
@@ -95,4 +108,5 @@
 		<p class="footer__copyright">© 2023 Mesto Russia</p>
 	</footer>
 </body>
+
 </html>

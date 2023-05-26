@@ -1,9 +1,12 @@
 import {
-	openPopup
+	// openPopup
 } from './utils.js';
 
+// --------
+// временный импорт, для проверки открытия карточек
+import PopupWithImage from '../components/PopupWithImage.js';
 
-
+// --------
 
 const cardTemplate = document.querySelector('#card').content;
 const cardsContainer = document.querySelector('.cards');
@@ -42,10 +45,19 @@ function createCardTemplate(link, text, sum, buttonSwap, cardId, idLike, idPerso
 	})
 	
 	cardImage.addEventListener('click', ()=> {
-		openPopup(popupZoom);
-		popupImage.src = `${cardImage.src}`;
-		popupImage.alt = `${cardTitle.textContent}`;
-		popupText.textContent = `${cardTitle.textContent}`
+		// openPopup(popupZoom);
+
+		// popupImage.src = `${cardImage.src}`;
+		// popupImage.alt = `${cardTitle.textContent}`;
+		// popupText.textContent = `${cardTitle.textContent}`
+
+		// ссылка и текст карточки переданные в card при создании карточки
+		const data = {
+			src: link,
+			textContent: text,
+		}
+		const popupImageClass = new PopupWithImage(data, '.popup_form_opened-image')
+		popupImageClass.open()
 	});
 	
 	buttonDelete.disabled = buttonSwap;
