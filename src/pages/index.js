@@ -45,7 +45,10 @@ import {
 } from '../scripts/api.js'
 
 // импорт классов
-import {api} from '../components/Api.js'
+import {api} from '../components/Api.js';
+import Card from '../components/Card';
+import Section from '../components/Section';
+import UserInfo from '../components/UserInfo';
 import PopupWithForm from '../components/PopupWithForm';
 import PopupWithImage from '../components/PopupWithImage';
 
@@ -126,23 +129,42 @@ enableValidation({
 }); 
 
 
+
 Promise.all([
 	api.getInitialProfile(),
 	api.getInitialCard()
 ])
 .then(([info, initialCards]) => {
+	const classUserInfo = new UserInfo(info);
 
-	profileName.textContent = info.name;
-	profileJob.textContent = info.about;
-	avatarImage.src = info.avatar;
+	const cardList = new Section({
+		items: initialCards,
+		renderer: (item) => {
+			const classCardGenerate = new Card(item, `#card`); 
+			const cardGenerate = classCardGenerate.generate(info._id);
+			cardList.setItem(cardGenerate);
+		}
+	}, cardsContainer);
 
+	//Создак класс UserInfo и использовал его для отрисовки на странице информации профиля
+	//Создал класс Section, который отрисовывает карточки на странице с помощью класса Card
+	//Пока не добавил взаимодействие с Popup. кнопка удаления работает без Api, толко в вёрстке на статике. С лайками такая же истоия
+
+	
+	
 	console.log('Promise.all=>info', info)
 	console.log('Promise.all=>initialCards', initialCards)
 	
-	return initialCards.forEach(item => {
-		const boolen = item.owner._id === info._id;
-		cardsContainer.append(createCardTemplate(item.link, item.name, item.likes.length, !boolen, item._id, item.likes, info._id));
+	
+	
+	classUserInfo.getUserInfo({
+		names: profileName,
+		aboutJob: profileJob,
+		avatars: avatarImage
 	});
+	cardList.renderItems();
+
+
 })
 .catch((error) => {
 	return console.log(error);
