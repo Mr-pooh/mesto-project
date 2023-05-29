@@ -13,6 +13,7 @@ import {
 	// popupAvatar,
 	avatarImage,
 	buttonImage,
+	inputAvatar,
 	// popupFormAvatar,
 	// inputAvatar
 } from '../scripts/modal';
@@ -100,24 +101,72 @@ Promise.all([
 	api.getInitialCard()
 ])
 .then(([info, initialCards]) => {
-	const classUserInfo = new UserInfo(info);
+	const classUserInfo = new UserInfo(
+		info,
+		
+				({inputName, inputJob, inputUrl}) => {
+					if(inputName, inputJob){
+					api.getSwapTextProfile(inputName, inputJob)
+					.then((res) => {
+						document.querySelector('.profile-info__name').textContent = res.name;
+						document.querySelector('.profile-info__profession').textContent = res.about;
+					})
+					.catch(err => console.log(err));
+				}
+					else{
+					api.getSwapAvatar(inputUrl)
+					.then((res) => {
+						document.querySelector('.profile__image').src = res.avatar;
+					})
+					.catch(err => console.log(err));
+				}
+
+				},
+				() => {
+					api.getInitialProfile()
+					.then(res => {
+						inputName.value = res.name;
+						inputNote.value = res.about;
+					})
+					.catch(err => console.log(err))
+				}
+			
+	);
 	
 	const cardList = new Section({
 		items: initialCards,
 		renderer: (item) => {
-				const classCardGenerate = new Card(
-					item,
-					`#card`,
-					() => {
+				const classCardGenerate = new Card({
+					data: item,
+					selector: `#card`,
+					handleCardClick: () => {
 						const data = {
 							src: item.link,
 							textContent: item.name,
 						}
 						const popupImageClass = new PopupWithImage(data, '.popup_form_opened-image')
 						popupImageClass.open()
+					},
+					addListenerDel: () => {
+						api.getDeleteCard(item._id)
+							.then(() => {
+								cardGenerate.closest('.card').remove();
+							})
+							.catch(err => console.log(err));
+						},
+					addListenerLike: (evt, meth) => {
+						api.getAddLike(item._id, `${meth}`)
+						.then((item) => {
+							evt.target.classList.toggle('card__like_active');
+							cardGenerate.querySelector('.card__like-sum').textContent = item.likes.length;
+						})
+						.catch((error) => {
+							return console.log(error);
+						});
+			
 					}
-					); 
-					const cardGenerate = classCardGenerate.generate(info._id, api);
+				}); 
+					const cardGenerate = classCardGenerate.generate(info._id);
 					cardList.setItem(cardGenerate);
 				}
 			},
@@ -138,14 +187,15 @@ Promise.all([
 			
 			const popupAvatarFormClass = new PopupWithForm({
 				renderer: (formData) => {
-					classUserInfo.setUserInfo(api, formData);
+					classUserInfo.setUserInfo(formData);
 				}
 			},
 			 '.popup_form_avatar'
 			 );
 			const popupEditFormClass = new PopupWithForm({
 				renderer: (formData) => {
-					classUserInfo.setUserInfo(api, formData);
+					classUserInfo.setUserInfo(formData);
+					classUserInfo.getUserInfo();
 				}
 			},
 			 '.popup_form_edit'
@@ -161,8 +211,9 @@ Promise.all([
 			buttonInfo.addEventListener('click', (evt) => {
 				// openPopup(popupEdit);
 				popupEditFormClass.open()
-				inputName.value = profileName.textContent;
-				inputNote.value = profileJob.textContent;
+			/* 	classUserInfo.getUserInfo(); */
+				/* inputName.value = profileName.textContent;
+				inputNote.value = profileJob.textContent; */
 			 });
 			
 			

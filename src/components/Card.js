@@ -1,6 +1,6 @@
 
 export default class Card{
-	constructor(	data, selector, renderer ){
+	constructor(	{data, selector, handleCardClick, addListenerDel, addListenerLike} ){
 		this._cardLink = `${data.link}`;
 		this._cardTitle = `${data.name}`;
 		this._cardLikeSum = `${data.likes.length}`;
@@ -8,7 +8,9 @@ export default class Card{
 		this._selector = `${selector}`;
 		this._cardId = `${data._id}`;
 		this._ownerId = `${data.owner._id}`;
-		this._renderer = renderer;
+		this._handleCardClick = handleCardClick;
+		this._addListenerDel = addListenerDel;
+		this._addListenerLike = addListenerLike;
 	}
 
 	_getElement() {
@@ -42,53 +44,35 @@ export default class Card{
 		return this._element;
 	}
 
-	_setEventListeners(url) {
+	_setEventListeners() {
 		this._element.querySelector('.card__image').addEventListener('click', () => {
 			this._clickOpenPopup();
 		});
 		
 		this._element.querySelector('.card__like').addEventListener('click', (evt) => {
-			this._clickLike(evt, url);
+			this._clickLike(evt);
 		});
 
 		this._element.querySelector('.card__close').addEventListener('click', () => this._clickDelCard(url));
 
 	}
 
-	_clickLike(evt, url) {
+	_clickLike(evt) {
 		const itemLike = this._element.querySelector('.card__like');
 		if(itemLike.classList.contains('card__like_active')){
-			url.getAddLike(this._cardId, 'DELETE')
-			.then((item) => {
-				evt.target.classList.remove('card__like_active');
-				this._element.querySelector('.card__like-sum').textContent = item.likes.length;
-			})
-			.catch((error) => {
-				return console.log(error);
-			});
+			this._addListenerLike(evt, 'DELETE');
 		} else {
-			url.getAddLike(this._cardId, 'PUT')
-			.then((item) => {
-				evt.target.classList.add('card__like_active');
-				this._element.querySelector('.card__like-sum').textContent = item.likes.length;
-			})
-			.catch((error) => {
-				return console.log(error);
-			});
+			this._addListenerLike(evt, 'PUT');
 		}
 	}
 
 
-	_clickDelCard(url) {
-		url.getDeleteCard(this._cardId)
-		.then(() => {
-			this._element.querySelector('.card__close').closest('.card').remove();
-		})
-		.catch(err => console.log(err));
+	_clickDelCard() {
+		this._addListenerDel();
 	}
 
 	_clickOpenPopup(){
-		return this._renderer();
+		return this._handleCardClick();
 	}
 	
 }

@@ -1,11 +1,13 @@
 export default class UserInfo{
-	constructor({ name, avatar, about}){
+constructor({ name, avatar, about}, renderer, formAdd){
 		this._name = name;
 		this._about = about;
 		this._avatar = avatar;
+		this._renderer = renderer;
+		this._formAdd = formAdd;
 	}
 
-	getUserInfo() {
+	getUserInfo(bool) {
 		this._element = document.querySelector('.profile');
 
 		this._element.querySelector('.profile-info__name').textContent = this._name;
@@ -14,21 +16,13 @@ export default class UserInfo{
 
 		this._element.querySelector('.profile__image').src = this._avatar;
 
-		
+
+			this._formAdd()
+
 	}
 
-	setUserInfo(api, {inputName, inputJob, inputUrl}) {
-		api.getSwapTextProfile(inputName, inputJob)
-		.then((res) => {
-			this._element.querySelector('.profile-info__name').textContent = res.name;
-			this._element.querySelector('.profile-info__profession').textContent = res.about;
-		})
-		.catch(err => console.log(err));
-		api.getSwapAvatar(inputUrl)
-		.then((res) => {
-			this._element.querySelector('.profile__image').src = res.avatar;
-		})
-		.catch(err => console.log(err));
+	setUserInfo(formData) {
+		this._renderer(formData);
 	}
 
 }
