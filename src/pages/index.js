@@ -51,6 +51,7 @@ import Section from '../components/Section';
 import UserInfo from '../components/UserInfo';
 import PopupWithForm from '../components/PopupWithForm';
 import PopupWithImage from '../components/PopupWithImage';
+import FormValidator from '../components/FormValidator';
 
 
 // инициализация классов popup, без popup для картинки
@@ -70,16 +71,28 @@ const popupAddFormClass = new PopupWithForm({
 }, '.popup_form_add');
 
 
+const validationOptions = {
+		formSelector: '.popup__form',
+		inputSelector: '.popup__field',
+		submitButtonSelector: '.popup__button-save',
+		inputErrorClass: 'popup__field_type_error',
+		errorClass: 'popup__field-error_active'
+	}
 
+const validationAddForm = new FormValidator(
+	validationOptions, '.popup_form_add'
+)
+validationAddForm.enableValidation()
 
-enableValidation({
-	formSelector: '.popup__form',
-  inputSelector: '.popup__field',
-  submitButtonSelector: '.popup__button-save',
-  inputErrorClass: 'popup__field_type_error',
-  errorClass: 'popup__field-error_active'
-}); 
+const validationEditForm = new FormValidator(
+	validationOptions, '.popup_form_edit'
+)
+validationEditForm.enableValidation()
 
+const validationAvatarForm = new FormValidator(
+	validationOptions, '.popup_form_avatar'
+)
+validationAvatarForm.enableValidation()
 
 
 Promise.all([
