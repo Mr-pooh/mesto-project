@@ -69,55 +69,7 @@ const popupAddFormClass = new PopupWithForm({
 			})
 	}
 }, '.popup_form_add');
-const popupAvatarFormClass = new PopupWithForm({
-	renderer: (formData) => {
-		// renderLoading(true, popupFormAvatar, 'Сохранение...');
-		api.getSwapAvatar(formData.inputUrl)
-			.then((res) => {
-				console.log('getSwapAvatar-res', res)
-				avatarImage.src = res.avatar;
-			})
-			.catch(err => console.log('popupAvatarFormClass', err))
-			.finally(() => {
-				// renderLoading(false, popupFormAvatar, 'Сохранить');
-			})
-	}
-}, '.popup_form_avatar');
-const popupEditFormClass = new PopupWithForm({
-	renderer: (formData) => {
-		// renderLoading(true, popupFormInfo, 'Сохранение...');
-		api.getSwapTextProfile(formData.inputName, formData.inputJob)
-			.then((res) => {
-				console.log('getSwapTextProfile-res', res)
-				profileName.textContent = res.name;
-				profileJob.textContent = res.about;
-			})
-			.catch(err => console.log('popupEditFormClass', err))
-			.finally(() => {
-				// renderLoading(false, popupFormInfo, 'Сохранить');
-			})
-	}
-}, '.popup_form_edit');
 
-
-buttonImage.addEventListener('click', () => {
-	// openPopup(popupAvatar);
-	popupAvatarFormClass.open()
-})
-
-
-buttonInfo.addEventListener('click', (evt) => {
-	// openPopup(popupEdit);
-	popupEditFormClass.open()
-	inputName.value = profileName.textContent;
-	inputNote.value = profileJob.textContent;
- });
-
-
-buttonAdd.addEventListener('click', () => {
-	// openPopup(popupAdd);
-	popupAddFormClass.open();
-});
 
 const validationOptions = {
 		formSelector: '.popup__form',
@@ -149,40 +101,141 @@ Promise.all([
 ])
 .then(([info, initialCards]) => {
 	const classUserInfo = new UserInfo(info);
-
+	
 	const cardList = new Section({
 		items: initialCards,
 		renderer: (item) => {
-			const classCardGenerate = new Card(item, `#card`); 
-			const cardGenerate = classCardGenerate.generate(info._id);
-			cardList.setItem(cardGenerate);
-		}
-	}, cardsContainer);
+				const classCardGenerate = new Card(
+					item,
+					`#card`,
+					() => {
+						const data = {
+							src: item.link,
+							textContent: item.name,
+						}
+						const popupImageClass = new PopupWithImage(data, '.popup_form_opened-image')
+						popupImageClass.open()
+					}
+					); 
+					const cardGenerate = classCardGenerate.generate(info._id, api);
+					cardList.setItem(cardGenerate);
+				}
+			},
+			cardsContainer
+			);
+			
+			//Создал класс UserInfo и использовал его для отрисовки на странице информации профиля
+			//Создал класс Section, который отрисовывает карточки на странице с помощью класса Card
+			//Пока не добавил взаимодействие с Popup. кнопка удаления работает без Api, толко в вёрстке на статике. С лайками такая же истоия
+			
+			
+			
+			console.log('Promise.all=>info', info)
+			console.log('Promise.all=>initialCards', initialCards)
 
-	//Создак класс UserInfo и использовал его для отрисовки на странице информации профиля
-	//Создал класс Section, который отрисовывает карточки на странице с помощью класса Card
-	//Пока не добавил взаимодействие с Popup. кнопка удаления работает без Api, толко в вёрстке на статике. С лайками такая же истоия
-
-	
-	
-	console.log('Promise.all=>info', info)
-	console.log('Promise.all=>initialCards', initialCards)
-	
-	
-	
-	classUserInfo.getUserInfo({
-		names: profileName,
-		aboutJob: profileJob,
-		avatars: avatarImage
-	});
-	cardList.renderItems();
 
 
-})
-.catch((error) => {
-	return console.log(error);
+			
+			const popupAvatarFormClass = new PopupWithForm({
+				renderer: (formData) => {
+					classUserInfo.setUserInfo(api, formData);
+				}
+			},
+			 '.popup_form_avatar'
+			 );
+			const popupEditFormClass = new PopupWithForm({
+				renderer: (formData) => {
+					classUserInfo.setUserInfo(api, formData);
+				}
+			},
+			 '.popup_form_edit'
+			 );
+			
+			
+			buttonImage.addEventListener('click', () => {
+				// openPopup(popupAvatar);
+				popupAvatarFormClass.open()
+			})
+			
+			
+			buttonInfo.addEventListener('click', (evt) => {
+				// openPopup(popupEdit);
+				popupEditFormClass.open()
+				inputName.value = profileName.textContent;
+				inputNote.value = profileJob.textContent;
+			 });
+			
+			
+			buttonAdd.addEventListener('click', () => {
+				// openPopup(popupAdd);
+				popupAddFormClass.open();
+			});
+			
+
+			
+			classUserInfo.getUserInfo();
+			cardList.renderItems();
+
+
+		})
+		.catch((error) => {
+			return console.log(error);
 });
 
+
+//const popupAvatarFormClass = new PopupWithForm({
+//	renderer: (formData) => {
+		
+	//	classUserInfo.setUserInfo(api, formData);
+		// renderLoading(true, popupFormAvatar, 'Сохранение...');
+		/* api.getSwapAvatar(formData.inputUrl)
+			.then((res) => {
+				console.log('getSwapAvatar-res', res)
+				avatarImage.src = res.avatar;
+			})
+			.catch(err => console.log('popupAvatarFormClass', err))
+			.finally(() => {
+				// renderLoading(false, popupFormAvatar, 'Сохранить');
+			}) */
+//	}
+//}, '.popup_form_avatar');
+//const popupEditFormClass = new PopupWithForm({
+	//renderer: (formData) => {
+
+	//	classUserInfo.setUserInfo(api, formData);
+		// renderLoading(true, popupFormInfo, 'Сохранение...');
+		/* api.getSwapTextProfile(formData.inputName, formData.inputJob)
+			.then((res) => {
+				console.log('getSwapTextProfile-res', res)
+				profileName.textContent = res.name;
+				profileJob.textContent = res.about;
+			})
+			.catch(err => console.log('popupEditFormClass', err))
+			.finally(() => {
+				// renderLoading(false, popupFormInfo, 'Сохранить');
+			}) */
+//	}
+//}, '.popup_form_edit');
+
+
+//buttonImage.addEventListener('click', () => {
+	// openPopup(popupAvatar);
+	//popupAvatarFormClass.open()
+//})
+
+
+//buttonInfo.addEventListener('click', (evt) => {
+	// openPopup(popupEdit);
+	//popupEditFormClass.open()
+	//inputName.value = profileName.textContent;
+	//inputNote.value = profileJob.textContent;
+ //});
+
+
+//buttonAdd.addEventListener('click', () => {
+	// openPopup(popupAdd);
+	//popupAddFormClass.open();
+//});
 
 // ----
 // api.getInitialProfile()
