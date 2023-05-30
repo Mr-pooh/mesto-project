@@ -13,12 +13,12 @@ export default class Section {
 		this._container.prepend(element);
 	}
 
-	renderItems(){
-		
+	renderItems(_renderItems, funck){
+		this._renderItems = _renderItems;
 		this._renderItems.forEach((item) => {
-			this._renderer(item);
-			
-		});
+			this._renderer(item, funck);
+		})
+		
 	}
 
 }

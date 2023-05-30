@@ -23,12 +23,12 @@ export default class Card{
 		return cardCloneElement;
 	}
 
-	generate(idPerson, url) {
+	generate(idPerson) {
 		this._element = this._getElement();
 
 		this._element.querySelector('.card__close').disabled = this._ownerId !== idPerson;
 
-		this._setEventListeners(url);
+		this._setEventListeners();
 
 		this._element.querySelector('.card__image').src = this._cardLink;
 		this._element.querySelector('.card__image').alt = this._cardTitle;
@@ -53,7 +53,7 @@ export default class Card{
 			this._clickLike(evt);
 		});
 
-		this._element.querySelector('.card__close').addEventListener('click', () => this._clickDelCard(url));
+		this._element.querySelector('.card__close').addEventListener('click', (evt) => this._clickDelCard(evt));
 
 	}
 
@@ -67,8 +67,8 @@ export default class Card{
 	}
 
 
-	_clickDelCard() {
-		this._addListenerDel();
+	_clickDelCard(evt) {
+		this._addListenerDel(evt);
 	}
 
 	_clickOpenPopup(){

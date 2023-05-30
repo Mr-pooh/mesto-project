@@ -9,8 +9,8 @@ import {
 	inputNote, 
 	buttonAdd,
 	// popupAdd,
-	// popupFormInfo,
-	// popupAvatar,
+	 popupFormInfo,
+	 popupAvatar,
 	avatarImage,
 	buttonImage,
 	inputAvatar,
@@ -19,7 +19,7 @@ import {
 } from '../scripts/modal';
 
 import { 
-	// popupFormCreate,
+	popupFormCreate,
 	cardsContainer,
 	createCardTemplate,
 	// popupName,
@@ -55,18 +55,67 @@ import PopupWithImage from '../components/PopupWithImage';
 import FormValidator from '../components/FormValidator';
 
 
+
+
+const sectionItems = new Section({
+	items: [],
+	renderer: 
+		(item, funck) => {
+			const classCardGenerate = new Card({
+				data: item,
+				selector: `#card`,
+				handleCardClick: () => {
+					const data = {
+						src: item.link,
+						textContent: item.name,
+					}
+					const popupImageClass = new PopupWithImage(data, '.popup_form_opened-image')
+					popupImageClass.open()
+				},
+				addListenerDel: (evt) => {
+					api.getDeleteCard(item._id)
+						.then(() => {
+							evt.target.closest('.card').remove();
+						})
+						.catch(err => console.log(err));
+					},
+				addListenerLike: (evt, meth) => {
+					api.getAddLike(item._id, `${meth}`)
+					.then((item) => {
+						evt.target.classList.toggle('card__like_active');
+						evt.target.closest('.card').querySelector('.card__like-sum').textContent = item.likes.length;
+						/* evt.target.classList.contain('card__like-sum').textContent = item.likes.length; */
+					})
+					.catch((error) => {
+						return console.log(error);
+					});
+				}
+			});
+			
+				funck(classCardGenerate);
+			
+			/* const cardAddGen = classCardGenerate.generate(false);
+			sectionItems.addItem(cardAddGen); */
+		}
+	},
+	cardsContainer
+)
+
+
 // инициализация классов popup, без popup для картинки
 const popupAddFormClass = new PopupWithForm({
 	renderer: (formData) => {
-		// renderLoading(true, popupFormCreate, 'Сохранение...');
+		 renderLoading(true, popupFormCreate, 'Сохранение...');
 		api.getAddCardOnServer(formData.inputName, formData.inputUrl)
-			.then((item) => {
-				console.log('getAddCardOnServer-item', item)
-				cardsContainer.prepend(createCardTemplate(item.link, item.name, item.likes.length, false, item._id, item.likes, false));
+			.then((res) => {
+				sectionItems.renderItems([res] ,(item) => {
+					const cardAddGenerate = item.generate(res.owner._id)
+					sectionItems.addItem(cardAddGenerate);
+				});
 			})
 			.catch(err => console.log('popupAddFormClass', err))
 			.finally(() => {
-				// renderLoading(false, popupFormCreate, 'Создать');
+				 renderLoading(false, popupFormCreate, 'Создать');
 			})
 	}
 }, '.popup_form_add');
@@ -103,27 +152,33 @@ Promise.all([
 .then(([info, initialCards]) => {
 	const classUserInfo = new UserInfo(
 		info,
-		
-				({inputName, inputJob, inputUrl}) => {
-					if(inputName, inputJob){
+		({inputName, inputJob, inputUrl}) => {
+				if(inputName, inputJob){
+					renderLoading(true, popupFormInfo, 'Сохранение...');
 					api.getSwapTextProfile(inputName, inputJob)
 					.then((res) => {
 						document.querySelector('.profile-info__name').textContent = res.name;
 						document.querySelector('.profile-info__profession').textContent = res.about;
 					})
-					.catch(err => console.log(err));
+					.catch(err => console.log(err))
+					.finally(()=>  {
+						renderLoading(false, popupFormInfo, 'Сохранить')
+					})
 				}
-					else{
+				else {
+					renderLoading(true, popupAvatar, 'Сохранение...');
 					api.getSwapAvatar(inputUrl)
 					.then((res) => {
 						document.querySelector('.profile__image').src = res.avatar;
 					})
-					.catch(err => console.log(err));
+					.catch(err => console.log(err))
+					.finally(()=>  {
+						renderLoading(false, popupAvatar, 'Сохранить')
+					})
 				}
-
-				},
-				() => {
-					api.getInitialProfile()
+		},
+		() => {
+				api.getInitialProfile()
 					.then(res => {
 						inputName.value = res.name;
 						inputNote.value = res.about;
@@ -137,46 +192,9 @@ Promise.all([
 				}
 			
 	);
+
 	
-	const cardList = new Section({
-		items: initialCards,
-		renderer: (item) => {
-				const classCardGenerate = new Card({
-					data: item,
-					selector: `#card`,
-					handleCardClick: () => {
-						const data = {
-							src: item.link,
-							textContent: item.name,
-						}
-						const popupImageClass = new PopupWithImage(data, '.popup_form_opened-image')
-						popupImageClass.open()
-					},
-					addListenerDel: () => {
-						api.getDeleteCard(item._id)
-							.then(() => {
-								cardGenerate.closest('.card').remove();
-							})
-							.catch(err => console.log(err));
-						},
-					addListenerLike: (evt, meth) => {
-						api.getAddLike(item._id, `${meth}`)
-						.then((item) => {
-							evt.target.classList.toggle('card__like_active');
-							cardGenerate.querySelector('.card__like-sum').textContent = item.likes.length;
-						})
-						.catch((error) => {
-							return console.log(error);
-						});
-			
-					}
-				}); 
-					const cardGenerate = classCardGenerate.generate(info._id);
-					cardList.setItem(cardGenerate);
-				}
-			},
-			cardsContainer
-			);
+	/* sectionItems.setItem(cardGenerate); */
 			
 			//Создал класс UserInfo и использовал его для отрисовки на странице информации профиля
 			//Создал класс Section, который отрисовывает карточки на странице с помощью класса Card
@@ -231,7 +249,13 @@ Promise.all([
 
 
 			classUserInfo.getUserInfo(true);
-			cardList.renderItems();
+
+
+
+			sectionItems.renderItems(initialCards ,(item) => {
+				const cardGenerate = item.generate(info._id)
+				sectionItems.setItem(cardGenerate);
+			});
 
 
 		})
