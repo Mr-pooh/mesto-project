@@ -7,18 +7,20 @@ constructor({ name, avatar, about}, renderer, formAdd){
 		this._formAdd = formAdd;
 	}
 
-	getUserInfo() {
+	getUserInfo(bool) {
+
+
 		this._element = document.querySelector('.profile');
+		if(bool){
+			this._element.querySelector('.profile-info__name').textContent = this._name;
 
-		this._element.querySelector('.profile-info__name').textContent = this._name;
+			this._element.querySelector('.profile-info__profession').textContent = this._about;
 
-		this._element.querySelector('.profile-info__profession').textContent = this._about;
-
-		this._element.querySelector('.profile__image').src = this._avatar;
-
-	
+			this._element.querySelector('.profile__image').src = this._avatar;
+		}
+		else{
 			this._formAdd()
-
+		}
 	}
 
 	setUserInfo(formData) {
