@@ -119,23 +119,23 @@ Promise.all([
 	api.getInitialCard()
 ])
 .then(([info, initialCards]) => {
-	const classUserInfo = new UserInfo(
-		info,
-		({inputName, inputJob, inputUrl}) => {
-			if(inputName, inputJob){
+	const classUserInfo = new UserInfo('profile-info__name', 'profile-info__profession');
+		
+	
+		/* ,
+		({inputName, inputJob}) => {
+			
 				renderLoading(true, popupFormInfo, 'Сохранение...');
 				api.getSwapTextProfile(inputName, inputJob)
 				.then((res) => {
-					document.querySelector('.profile-info__name').textContent = res.name;
-					document.querySelector('.profile-info__profession').textContent = res.about;
+					classUserInfo.getUserInfo(res)
 				})
 				.catch(err => console.log(err))
 				.finally(()=>  {
 					renderLoading(false, popupFormInfo, 'Сохранить')
 				})
-			}
-			else {
-				renderLoading(true, popupAvatar, 'Сохранение...');
+	
+				/* renderLoading(true, popupAvatar, 'Сохранение...');
 				api.getSwapAvatar(inputUrl)
 				.then((res) => {
 					document.querySelector('.profile__image').src = res.avatar;
@@ -143,35 +143,40 @@ Promise.all([
 				.catch(err => console.log(err))
 				.finally(()=>  {
 					renderLoading(false, popupAvatar, 'Сохранить')
-				})
-			}
+				}) 
+			
 		},
 		() => {
 			api.getInitialProfile()
 				.then(res => {
 					inputName.value = res.name;
 					inputNote.value = res.about;
-					document.querySelector('.profile-info__name').textContent = res.name;
-
-					document.querySelector('.profile-info__profession').textContent = res.about;
-
-					document.querySelector('.profile__image').src = res.avatar;
+					classUserInfo.getUserInfo(res)
 				})
 				.catch(err => console.log(err))
-		}
-	);
+		} */
 			
 	const popupAvatarFormClass = new PopupWithForm({
 		renderer: (formData) => {
-			classUserInfo.setUserInfo(formData);
+			api.getSwapAvatar(formData.inputUrl)
+			.then((res) => {
+				document.querySelector('.profile__image').src = res.avatar;
+			})
+			.catch(err => console.log(err))
 		}
 	},
 		'.popup_form_avatar'
 		);
 	const popupEditFormClass = new PopupWithForm({
 		renderer: (formData) => {
-			classUserInfo.setUserInfo(formData);
-			classUserInfo.getUserInfo(false);
+			classUserInfo.setUserInfo(()=> {
+				api.getSwapTextProfile(formData.inputName, formData.inputJob)
+				then((res) => {
+					classUserInfo.getUserInfo(res);
+				})
+				.catch(err => console.log(err))
+			});
+			/* classUserInfo.getUserInfo(false); */
 		}
 	},
 		'.popup_form_edit'
@@ -184,8 +189,15 @@ Promise.all([
 	
 	
 	buttonInfo.addEventListener('click', (evt) => {
-		popupEditFormClass.open();
-		classUserInfo.getUserInfo(false);
+		api.getInitialProfile()
+		.then(res => {
+			popupEditFormClass.open();
+			classUserInfo.getUserInfo(res);
+			inputName.value = res.name;
+			inputNote.value = res.about;
+
+		})
+		.catch(err => console.log(err))
 	});
 	
 	
@@ -193,7 +205,8 @@ Promise.all([
 		popupAddFormClass.open();
 	});
 
-	classUserInfo.getUserInfo(true);
+	classUserInfo.getUserInfo(info);
+	document.querySelector('.profile__image').src = info.avatar;
 
 	sectionItems.renderItems(initialCards ,(item) => {
 		const cardGenerate = item.generate(info._id)

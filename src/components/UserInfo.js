@@ -1,30 +1,21 @@
 export default class UserInfo{
-constructor({ name, avatar, about}, renderer, formAdd){
-		this._name = name;
-		this._about = about;
-		this._avatar = avatar;
-		this._renderer = renderer;
-		this._formAdd = formAdd;
+constructor( name, about ){
+		this._name = document.querySelector(`.${name}`);
+		this._about = document.querySelector(`.${about}`);
+		
+/* 		this._renderer = renderer;
+		this._formAdd = formAdd; */
 	}
 
-	getUserInfo(bool) {
+	getUserInfo({ name, about }) {
 
+		this._name.textContent =	name,
+		this._about.textContent = about;
 
-		this._element = document.querySelector('.profile');
-		if(bool){
-			this._element.querySelector('.profile-info__name').textContent = this._name;
-
-			this._element.querySelector('.profile-info__profession').textContent = this._about;
-
-			this._element.querySelector('.profile__image').src = this._avatar;
-		}
-		else{
-			this._formAdd()
-		}
 	}
 
-	setUserInfo(formData) {
-		this._renderer(formData);
+	setUserInfo(setInfo) {
+		this._setInfo = setInfo;
 	}
 
 }
