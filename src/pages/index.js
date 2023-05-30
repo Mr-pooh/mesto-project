@@ -8,17 +8,14 @@ import {
 	popupFormInfo,
 	popupAvatar,
 	buttonImage,
-
-} from '../scripts/modal';
-
-import { 
 	popupFormCreate,
-	cardsContainer,
-} from '../scripts/card.js';
+	cardsContainer
+} from '../utilits/constant.js';
+
 
 import {
 	renderLoading
-} from '../scripts/utils.js';
+} from '../utilits/utilits.js';
 
 // импорт классов
 import {api} from '../components/Api.js';
@@ -59,7 +56,6 @@ const sectionItems = new Section({
 					.then((item) => {
 						evt.target.classList.toggle('card__like_active');
 						evt.target.closest('.card').querySelector('.card__like-sum').textContent = item.likes.length;
-						/* evt.target.classList.contain('card__like-sum').textContent = item.likes.length; */
 					})
 					.catch((error) => {
 						return console.log(error);
