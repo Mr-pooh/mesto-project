@@ -9,7 +9,8 @@ import {
 	popupAvatar,
 	buttonImage,
 	popupFormCreate,
-	cardsContainer
+	cardsContainer, 
+	config
 } from '../utilits/constant.js';
 
 
@@ -18,7 +19,7 @@ import {
 } from '../utilits/utilits.js';
 
 // импорт классов
-import {api} from '../components/Api.js';
+import Api from '../components/Api.js';
 import Card from '../components/Card';
 import Section from '../components/Section';
 import UserInfo from '../components/UserInfo';
@@ -26,7 +27,7 @@ import PopupWithForm from '../components/PopupWithForm';
 import PopupWithImage from '../components/PopupWithImage';
 import FormValidator from '../components/FormValidator';
 
-
+const api = new Api(config);
 
 
 const sectionItems = new Section({

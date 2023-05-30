@@ -13,8 +13,8 @@ export default class Section {
 		this._container.prepend(element);
 	}
 
-	renderItems(_renderItems, funck){
-		this._renderItems = _renderItems;
+	renderItems(cardArr, funck){
+		this._renderItems = cardArr;
 		this._renderItems.forEach((item) => {
 			this._renderer(item, funck);
 		})

@@ -1,13 +1,7 @@
-const config = {
-	baseUrl: 'https://nomoreparties.co/v1/plus-cohort-23',
-	headers: {
-		authorization: '43b4a3de-4bbd-4be1-abd1-bf011e8ef6fa',
-			'Content-Type': 'application/json'
-	}
-}
 
 
-class Api {
+
+export default class Api {
 	constructor(options){
 		this._baseUrl = options.baseUrl;
 		this._headers = options.headers;
@@ -18,7 +12,7 @@ class Api {
 		return fetch(`${this._baseUrl}/cards`, {
 			headers: this._headers
 		})
-		.then(res => this._returnError(res))
+		.then(res => this._getResponseData(res))
 	}
 
 
@@ -26,7 +20,7 @@ class Api {
 		return fetch(`${this._baseUrl}/users/me`, {
 			headers: this._headers
 		})
-		.then(res => this._returnError(res))
+		.then(res => this._getResponseData(res))
 	}
 
 
@@ -38,7 +32,7 @@ class Api {
 				name: nikname,
 				about: job
 			})
-		}).then(res => this._returnError(res))
+		}).then(res => this._getResponseData(res))
 	}
 
 
@@ -51,7 +45,7 @@ class Api {
 			 link: linkimg
 			})
 		})
-		.then(res => this._returnError(res)) 	
+		.then(res => this._getResponseData(res)) 	
 	}
 
 
@@ -63,7 +57,7 @@ class Api {
 				avatar: avatarImage
 			})
 		})
-		.then(res => this._returnError(res))
+		.then(res => this._getResponseData(res))
 	}
 
 
@@ -72,7 +66,7 @@ class Api {
 			method: `${meth}`,
 			headers: this._headers
 		})
-		.then(res => this._returnError(res))
+		.then(res => this._getResponseData(res))
 	}
 
 
@@ -81,19 +75,14 @@ class Api {
 			method: 'DELETE',
 			headers: this._headers
 		})
-		.then(res => this._returnError(res))
+		.then(res => this._getResponseData(res))
 	}
 
 
-	_returnError(item) {
+	_getResponseData(item) {
 		if(item.ok){
 			return item.json();
 		}
 		return Promise.reject(`Что-то не так: ${item.status}`);
 	}
 }
-
-
-const api = new Api(config);
-
-export { api }
