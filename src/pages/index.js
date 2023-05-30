@@ -6,11 +6,11 @@ import {
 	inputNote, 
 	buttonAdd,
 	popupFormInfo,
-	popupAvatar,
 	buttonImage,
 	popupFormCreate,
 	cardsContainer, 
-	config
+	config,
+	popupFormAvatar
 } from '../utilits/constant.js';
 
 
@@ -29,6 +29,9 @@ import FormValidator from '../components/FormValidator';
 
 const api = new Api(config);
 
+const classUserInfo = new UserInfo('profile-info__name', 'profile-info__profession');
+
+const popupImageClass = new PopupWithImage('.popup_form_opened-image')
 
 const sectionItems = new Section({
 	items: [],
@@ -38,12 +41,7 @@ const sectionItems = new Section({
 				data: item,
 				selector: `#card`,
 				handleCardClick: () => {
-					const data = {
-						src: item.link,
-						textContent: item.name,
-					}
-					const popupImageClass = new PopupWithImage(data, '.popup_form_opened-image')
-					popupImageClass.open()
+					popupImageClass.open(item)
 				},
 				addListenerDel: (evt) => {
 					api.getDeleteCard(item._id)
@@ -73,7 +71,7 @@ const sectionItems = new Section({
 
 // инициализация классов popup, без popup для картинки
 const popupAddFormClass = new PopupWithForm({
-	renderer: (formData) => {
+	actionSubmit: (formData) => {
 		renderLoading(true, popupFormCreate, 'Сохранение...');
 		api.getAddCardOnServer(formData.inputName, formData.inputUrl)
 			.then((res) => {
@@ -82,12 +80,49 @@ const popupAddFormClass = new PopupWithForm({
 					sectionItems.addItem(cardAddGenerate);
 				});
 			})
+			.then(() => {
+				popupAddFormClass.close()
+			})
 			.catch(err => console.log('popupAddFormClass', err))
 			.finally(() => {
 				renderLoading(false, popupFormCreate, 'Создать');
 			})
 	}
 }, '.popup_form_add');
+
+const popupAvatarFormClass = new PopupWithForm({
+	actionSubmit: (formData) => {
+		renderLoading(true, popupFormAvatar, 'Сохранение...');
+		api.getSwapAvatar(formData.inputUrl)
+		.then((res) => {
+			classUserInfo.setAvatar(res);
+		})
+		.then(() => {
+			popupAvatarFormClass.close()
+		})
+		.catch(err => console.log(err))
+		.finally(() => {
+			renderLoading(false, popupFormAvatar, 'Сохранить');
+		})
+	}
+}, '.popup_form_avatar');
+
+const popupEditFormClass = new PopupWithForm({
+	actionSubmit: (formData) => {
+		renderLoading(true, popupFormInfo, 'Сохранение...');
+		api.getSwapTextProfile(formData.inputName, formData.inputJob)
+		.then((res) => {
+			classUserInfo.setUserInfo(res);
+		})
+		.then(() => {
+			popupEditFormClass.close()
+		})
+		.catch(err => console.log(err))
+		.finally(() => {
+			renderLoading(false, popupFormInfo, 'Сохранить');
+		})
+	}
+}, '.popup_form_edit');
 
 
 const validationOptions = {
@@ -114,100 +149,33 @@ const validationAvatarForm = new FormValidator(
 validationAvatarForm.enableValidation()
 
 
+buttonImage.addEventListener('click', () => {
+	popupAvatarFormClass.open()
+})
+
+buttonInfo.addEventListener('click', (evt) => {
+	const userInfo = classUserInfo.getUserInfo();
+
+	inputName.value = userInfo.name;
+	inputNote.value = userInfo.about;
+
+	popupEditFormClass.open();
+});
+
+buttonAdd.addEventListener('click', () => {
+	popupAddFormClass.open();
+});
+
+
 Promise.all([
 	api.getInitialProfile(),
 	api.getInitialCard()
 ])
 .then(([info, initialCards]) => {
-	const classUserInfo = new UserInfo('profile-info__name', 'profile-info__profession');
-		
+	// заполнение профиля и аватара
+	classUserInfo.setUserInfo(info);
+	classUserInfo.setAvatar(info);
 	
-		/* ,
-		({inputName, inputJob}) => {
-			
-				renderLoading(true, popupFormInfo, 'Сохранение...');
-				api.getSwapTextProfile(inputName, inputJob)
-				.then((res) => {
-					classUserInfo.getUserInfo(res)
-				})
-				.catch(err => console.log(err))
-				.finally(()=>  {
-					renderLoading(false, popupFormInfo, 'Сохранить')
-				})
-	
-				/* renderLoading(true, popupAvatar, 'Сохранение...');
-				api.getSwapAvatar(inputUrl)
-				.then((res) => {
-					document.querySelector('.profile__image').src = res.avatar;
-				})
-				.catch(err => console.log(err))
-				.finally(()=>  {
-					renderLoading(false, popupAvatar, 'Сохранить')
-				}) 
-			
-		},
-		() => {
-			api.getInitialProfile()
-				.then(res => {
-					inputName.value = res.name;
-					inputNote.value = res.about;
-					classUserInfo.getUserInfo(res)
-				})
-				.catch(err => console.log(err))
-		} */
-			
-	const popupAvatarFormClass = new PopupWithForm({
-		renderer: (formData) => {
-			api.getSwapAvatar(formData.inputUrl)
-			.then((res) => {
-				document.querySelector('.profile__image').src = res.avatar;
-			})
-			.catch(err => console.log(err))
-		}
-	},
-		'.popup_form_avatar'
-		);
-	const popupEditFormClass = new PopupWithForm({
-		renderer: (formData) => {
-			classUserInfo.setUserInfo(()=> {
-				api.getSwapTextProfile(formData.inputName, formData.inputJob)
-				then((res) => {
-					classUserInfo.getUserInfo(res);
-				})
-				.catch(err => console.log(err))
-			});
-			/* classUserInfo.getUserInfo(false); */
-		}
-	},
-		'.popup_form_edit'
-		);
-	
-	
-	buttonImage.addEventListener('click', () => {
-		popupAvatarFormClass.open()
-	})
-	
-	
-	buttonInfo.addEventListener('click', (evt) => {
-		api.getInitialProfile()
-		.then(res => {
-			popupEditFormClass.open();
-			classUserInfo.getUserInfo(res);
-			inputName.value = res.name;
-			inputNote.value = res.about;
-
-		})
-		.catch(err => console.log(err))
-	});
-	
-	
-	buttonAdd.addEventListener('click', () => {
-		popupAddFormClass.open();
-	});
-
-	classUserInfo.getUserInfo(info);
-	document.querySelector('.profile__image').src = info.avatar;
-
 	sectionItems.renderItems(initialCards ,(item) => {
 		const cardGenerate = item.generate(info._id)
 		sectionItems.setItem(cardGenerate);

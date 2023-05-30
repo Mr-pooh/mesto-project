@@ -5,6 +5,7 @@ export default class Popup {
 		this._refCloseOverlay = this._closeOverlay.bind(this)
 		this._refHandleEscClose = this._handleEscClose.bind(this)
 		this._refCloseButton = this._closeButton.bind(this)
+		this._element = this._getElement()
 	}
 
 	_getElement() {
@@ -13,8 +14,6 @@ export default class Popup {
   }
 
 	open() {
-		this._element = this._getElement()
-		
 		this._element.classList.add('popup_opened');
 		this.setEventListeners()
 	}
