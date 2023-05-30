@@ -1,49 +1,24 @@
 import './index.css';
 
 import { 
-	// popupEdit,
 	buttonInfo,
-	profileName,
-	profileJob,
 	inputName,
 	inputNote, 
 	buttonAdd,
-	// popupAdd,
-	 popupFormInfo,
-	 popupAvatar,
-	avatarImage,
+	popupFormInfo,
+	popupAvatar,
 	buttonImage,
-	inputAvatar,
-	// popupFormAvatar,
-	// inputAvatar
+
 } from '../scripts/modal';
 
 import { 
 	popupFormCreate,
 	cardsContainer,
-	createCardTemplate,
-	// popupName,
-	// popupNote
 } from '../scripts/card.js';
 
 import {
-	enableValidation
-} from '../scripts/validate.js'
-
-
-import {
-	// openPopup,		
-	// closePopup,
 	renderLoading
 } from '../scripts/utils.js';
-
-import {
-	// downloadCards,
-	// downloadProfileInfo,
-	// swapTextProfile,
-	// addCardOnServer,
-	// swapImage
-} from '../scripts/api.js'
 
 // импорт классов
 import {api} from '../components/Api.js';
@@ -93,9 +68,6 @@ const sectionItems = new Section({
 			});
 			
 				funck(classCardGenerate);
-			
-			/* const cardAddGen = classCardGenerate.generate(false);
-			sectionItems.addItem(cardAddGen); */
 		}
 	},
 	cardsContainer
@@ -105,7 +77,7 @@ const sectionItems = new Section({
 // инициализация классов popup, без popup для картинки
 const popupAddFormClass = new PopupWithForm({
 	renderer: (formData) => {
-		 renderLoading(true, popupFormCreate, 'Сохранение...');
+		renderLoading(true, popupFormCreate, 'Сохранение...');
 		api.getAddCardOnServer(formData.inputName, formData.inputUrl)
 			.then((res) => {
 				sectionItems.renderItems([res] ,(item) => {
@@ -115,7 +87,7 @@ const popupAddFormClass = new PopupWithForm({
 			})
 			.catch(err => console.log('popupAddFormClass', err))
 			.finally(() => {
-				 renderLoading(false, popupFormCreate, 'Создать');
+				renderLoading(false, popupFormCreate, 'Создать');
 			})
 	}
 }, '.popup_form_add');
@@ -153,171 +125,86 @@ Promise.all([
 	const classUserInfo = new UserInfo(
 		info,
 		({inputName, inputJob, inputUrl}) => {
-				if(inputName, inputJob){
-					renderLoading(true, popupFormInfo, 'Сохранение...');
-					api.getSwapTextProfile(inputName, inputJob)
-					.then((res) => {
-						document.querySelector('.profile-info__name').textContent = res.name;
-						document.querySelector('.profile-info__profession').textContent = res.about;
-					})
-					.catch(err => console.log(err))
-					.finally(()=>  {
-						renderLoading(false, popupFormInfo, 'Сохранить')
-					})
-				}
-				else {
-					renderLoading(true, popupAvatar, 'Сохранение...');
-					api.getSwapAvatar(inputUrl)
-					.then((res) => {
-						document.querySelector('.profile__image').src = res.avatar;
-					})
-					.catch(err => console.log(err))
-					.finally(()=>  {
-						renderLoading(false, popupAvatar, 'Сохранить')
-					})
-				}
+			if(inputName, inputJob){
+				renderLoading(true, popupFormInfo, 'Сохранение...');
+				api.getSwapTextProfile(inputName, inputJob)
+				.then((res) => {
+					document.querySelector('.profile-info__name').textContent = res.name;
+					document.querySelector('.profile-info__profession').textContent = res.about;
+				})
+				.catch(err => console.log(err))
+				.finally(()=>  {
+					renderLoading(false, popupFormInfo, 'Сохранить')
+				})
+			}
+			else {
+				renderLoading(true, popupAvatar, 'Сохранение...');
+				api.getSwapAvatar(inputUrl)
+				.then((res) => {
+					document.querySelector('.profile__image').src = res.avatar;
+				})
+				.catch(err => console.log(err))
+				.finally(()=>  {
+					renderLoading(false, popupAvatar, 'Сохранить')
+				})
+			}
 		},
 		() => {
-				api.getInitialProfile()
-					.then(res => {
-						inputName.value = res.name;
-						inputNote.value = res.about;
-						document.querySelector('.profile-info__name').textContent = res.name;
+			api.getInitialProfile()
+				.then(res => {
+					inputName.value = res.name;
+					inputNote.value = res.about;
+					document.querySelector('.profile-info__name').textContent = res.name;
 
-						document.querySelector('.profile-info__profession').textContent = res.about;
+					document.querySelector('.profile-info__profession').textContent = res.about;
 
-						document.querySelector('.profile__image').src = res.avatar;
-					})
-					.catch(err => console.log(err))
-				}
-			
+					document.querySelector('.profile__image').src = res.avatar;
+				})
+				.catch(err => console.log(err))
+		}
 	);
-
+			
+	const popupAvatarFormClass = new PopupWithForm({
+		renderer: (formData) => {
+			classUserInfo.setUserInfo(formData);
+		}
+	},
+		'.popup_form_avatar'
+		);
+	const popupEditFormClass = new PopupWithForm({
+		renderer: (formData) => {
+			classUserInfo.setUserInfo(formData);
+			classUserInfo.getUserInfo(false);
+		}
+	},
+		'.popup_form_edit'
+		);
 	
-	/* sectionItems.setItem(cardGenerate); */
-			
-			//Создал класс UserInfo и использовал его для отрисовки на странице информации профиля
-			//Создал класс Section, который отрисовывает карточки на странице с помощью класса Card
-			//Пока не добавил взаимодействие с Popup. кнопка удаления работает без Api, толко в вёрстке на статике. С лайками такая же истоия
-			
-			
-			
-			console.log('Promise.all=>info', info)
-			console.log('Promise.all=>initialCards', initialCards)
+	
+	buttonImage.addEventListener('click', () => {
+		popupAvatarFormClass.open()
+	})
+	
+	
+	buttonInfo.addEventListener('click', (evt) => {
+		popupEditFormClass.open();
+		classUserInfo.getUserInfo(false);
+	});
+	
+	
+	buttonAdd.addEventListener('click', () => {
+		popupAddFormClass.open();
+	});
+
+	classUserInfo.getUserInfo(true);
+
+	sectionItems.renderItems(initialCards ,(item) => {
+		const cardGenerate = item.generate(info._id)
+		sectionItems.setItem(cardGenerate);
+	});
 
 
-
-			
-			const popupAvatarFormClass = new PopupWithForm({
-				renderer: (formData) => {
-					classUserInfo.setUserInfo(formData);
-				}
-			},
-			 '.popup_form_avatar'
-			 );
-			const popupEditFormClass = new PopupWithForm({
-				renderer: (formData) => {
-					classUserInfo.setUserInfo(formData);
-					classUserInfo.getUserInfo(false);
-				}
-			},
-			 '.popup_form_edit'
-			 );
-			
-			
-			buttonImage.addEventListener('click', () => {
-				// openPopup(popupAvatar);
-				popupAvatarFormClass.open()
-			})
-			
-			
-			buttonInfo.addEventListener('click', (evt) => {
-				// openPopup(popupEdit);
-				popupEditFormClass.open();
-				classUserInfo.getUserInfo(false);
-			/* 	classUserInfo.getUserInfo(); */
-				/* inputName.value = profileName.textContent;
-				inputNote.value = profileJob.textContent; */
-			 });
-			
-			
-			buttonAdd.addEventListener('click', () => {
-				// openPopup(popupAdd);
-				popupAddFormClass.open();
-			});
-			
-
-
-			classUserInfo.getUserInfo(true);
-
-
-
-			sectionItems.renderItems(initialCards ,(item) => {
-				const cardGenerate = item.generate(info._id)
-				sectionItems.setItem(cardGenerate);
-			});
-
-
-		})
-		.catch((error) => {
-			return console.log(error);
+})
+.catch((error) => {
+	return console.log(error);
 });
-
-
-//const popupAvatarFormClass = new PopupWithForm({
-//	renderer: (formData) => {
-		
-	//	classUserInfo.setUserInfo(api, formData);
-		// renderLoading(true, popupFormAvatar, 'Сохранение...');
-		/* api.getSwapAvatar(formData.inputUrl)
-			.then((res) => {
-				console.log('getSwapAvatar-res', res)
-				avatarImage.src = res.avatar;
-			})
-			.catch(err => console.log('popupAvatarFormClass', err))
-			.finally(() => {
-				// renderLoading(false, popupFormAvatar, 'Сохранить');
-			}) */
-//	}
-//}, '.popup_form_avatar');
-//const popupEditFormClass = new PopupWithForm({
-	//renderer: (formData) => {
-
-	//	classUserInfo.setUserInfo(api, formData);
-		// renderLoading(true, popupFormInfo, 'Сохранение...');
-		/* api.getSwapTextProfile(formData.inputName, formData.inputJob)
-			.then((res) => {
-				console.log('getSwapTextProfile-res', res)
-				profileName.textContent = res.name;
-				profileJob.textContent = res.about;
-			})
-			.catch(err => console.log('popupEditFormClass', err))
-			.finally(() => {
-				// renderLoading(false, popupFormInfo, 'Сохранить');
-			}) */
-//	}
-//}, '.popup_form_edit');
-
-
-//buttonImage.addEventListener('click', () => {
-	// openPopup(popupAvatar);
-	//popupAvatarFormClass.open()
-//})
-
-
-//buttonInfo.addEventListener('click', (evt) => {
-	// openPopup(popupEdit);
-	//popupEditFormClass.open()
-	//inputName.value = profileName.textContent;
-	//inputNote.value = profileJob.textContent;
- //});
-
-
-//buttonAdd.addEventListener('click', () => {
-	// openPopup(popupAdd);
-	//popupAddFormClass.open();
-//});
-
-// ----
-// api.getInitialProfile()
-// .then(res => console.log(res));
