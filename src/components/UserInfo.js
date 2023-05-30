@@ -7,7 +7,7 @@ constructor({ name, avatar, about}, renderer, formAdd){
 		this._formAdd = formAdd;
 	}
 
-	getUserInfo(bool) {
+	getUserInfo() {
 		this._element = document.querySelector('.profile');
 
 		this._element.querySelector('.profile-info__name').textContent = this._name;
@@ -16,7 +16,7 @@ constructor({ name, avatar, about}, renderer, formAdd){
 
 		this._element.querySelector('.profile__image').src = this._avatar;
 
-
+	
 			this._formAdd()
 
 	}

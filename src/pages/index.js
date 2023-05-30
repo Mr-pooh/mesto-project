@@ -127,6 +127,11 @@ Promise.all([
 					.then(res => {
 						inputName.value = res.name;
 						inputNote.value = res.about;
+						document.querySelector('.profile-info__name').textContent = res.name;
+
+						document.querySelector('.profile-info__profession').textContent = res.about;
+
+						document.querySelector('.profile__image').src = res.avatar;
 					})
 					.catch(err => console.log(err))
 				}
@@ -195,7 +200,7 @@ Promise.all([
 			const popupEditFormClass = new PopupWithForm({
 				renderer: (formData) => {
 					classUserInfo.setUserInfo(formData);
-					classUserInfo.getUserInfo();
+					classUserInfo.getUserInfo(false);
 				}
 			},
 			 '.popup_form_edit'
@@ -210,7 +215,8 @@ Promise.all([
 			
 			buttonInfo.addEventListener('click', (evt) => {
 				// openPopup(popupEdit);
-				popupEditFormClass.open()
+				popupEditFormClass.open();
+				classUserInfo.getUserInfo(false);
 			/* 	classUserInfo.getUserInfo(); */
 				/* inputName.value = profileName.textContent;
 				inputNote.value = profileJob.textContent; */
@@ -223,8 +229,8 @@ Promise.all([
 			});
 			
 
-			
-			classUserInfo.getUserInfo();
+
+			classUserInfo.getUserInfo(true);
 			cardList.renderItems();
 
 
