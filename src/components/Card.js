@@ -25,9 +25,8 @@ export default class Card{
 
 	generate(idPerson) {
 		this._element = this._getElement();
-		
-		this._removeElem = this._element.querySelector('.card__close');
-		this._removeElem.disabled = this._ownerId !== idPerson;
+
+		this._element.querySelector('.card__close').disabled = this._ownerId !== idPerson;
 		
 		this._element.querySelector('.card__image').src = this._cardLink;
 		this._element.querySelector('.card__image').alt = this._cardTitle;
@@ -53,7 +52,7 @@ export default class Card{
 			this._clickLike(evt);
 		});
 
-		this._removeElem.addEventListener('click', (evt) => this._clickDelCard(evt));
+		this._element.querySelector('.card__close').addEventListener('click', (evt) => this._clickDelCard(evt));
 
 	}
 
