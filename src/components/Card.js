@@ -25,22 +25,22 @@ export default class Card{
 
 	generate(idPerson) {
 		this._element = this._getElement();
-		this._removeElem = this._element.querySelector('.card__close')
+		
+		this._removeElem = this._element.querySelector('.card__close');
 		this._removeElem.disabled = this._ownerId !== idPerson;
-
-		this._setEventListeners();
-
+		
 		this._element.querySelector('.card__image').src = this._cardLink;
 		this._element.querySelector('.card__image').alt = this._cardTitle;
 		this._element.querySelector('.card__title').textContent = this._cardTitle;
 		this._element.querySelector('.card__like-sum').textContent = this._cardLikeSum;
-
+		
 		this._cardLikes.forEach((item) => {
 			if(item._id === idPerson){
 				this._element.querySelector('.card__like').classList.add('card__like_active');
 			}
 		});
-
+		this._setEventListeners();
+		
 		return this._element;
 	}
 
@@ -53,7 +53,7 @@ export default class Card{
 			this._clickLike(evt);
 		});
 
-		this._removeElem.addEventListener('click', () => this._clickDelCard());
+		this._removeElem.addEventListener('click', (evt) => this._clickDelCard(evt));
 
 	}
 
@@ -67,17 +67,21 @@ export default class Card{
 	}
 
 
-	_clickDelCard() {
-		this._addListenerDel();
+	_clickDelCard(evt) {
+		this._addListenerDel(evt);
 	}
 
 	_clickOpenPopup(){
 		return this._handleCardClick();
 	}
+
+	addLike(evt, res) {
+		evt.target.classList.toggle('card__like_active');
+		evt.target.closest('.card').querySelector('.card__like-sum').textContent = res.likes.length;
+	}
 	
-	removeCard() {
-		const removeClick = this._removeElem.closest('.card')
-		return removeClick.remove()
+	removeCard(evt) {
+		evt.target.closest('.card').remove()
 	}
 
 }

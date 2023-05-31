@@ -39,19 +39,18 @@ const classCardGenerate = (item) => new Card({
 	handleCardClick: () => {
 		popupImageClass.open(item)
 	},
-	addListenerDel: () => {
-	/* 	console.log(classCardGenerate(item).removeCard()) */
+	addListenerDel: (evt) => {
+	/* 	console.log(classCardGenerate(item).removeCard(evt)) */
 		api.getDeleteCard(item._id)
 			.then(() => {
-				classCardGenerate(item).removeCard()
+				classCardGenerate(item).removeCard(evt)
 			})
 			.catch(err => console.log(err));
 		},
 	addListenerLike: (evt, meth) => {
 		api.getAddLike(item._id, `${meth}`)
-		.then((item) => {
-			evt.target.classList.toggle('card__like_active');
-			evt.target.closest('.card').querySelector('.card__like-sum').textContent = item.likes.length;
+		.then((res) => {
+			classCardGenerate(item).addLike(evt, res)
 		})
 		.catch((error) => {
 			return console.log(error);
