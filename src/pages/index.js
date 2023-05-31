@@ -147,6 +147,7 @@ validationAvatarForm.enableValidation()
 
 
 buttonImage.addEventListener('click', () => {
+	validationAvatarForm.resetValidation()
 	popupAvatarFormClass.open()
 })
 
@@ -156,10 +157,12 @@ buttonInfo.addEventListener('click', (evt) => {
 	inputName.value = userInfo.name;
 	inputNote.value = userInfo.about;
 
+	validationEditForm.resetValidation()
 	popupEditFormClass.open();
 });
 
 buttonAdd.addEventListener('click', () => {
+	validationAddForm.resetValidation()
 	popupAddFormClass.open();
 });
 
