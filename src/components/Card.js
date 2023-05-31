@@ -25,8 +25,8 @@ export default class Card{
 
 	generate(idPerson) {
 		this._element = this._getElement();
-
-		this._element.querySelector('.card__close').disabled = this._ownerId !== idPerson;
+		this._removeElem = this._element.querySelector('.card__close')
+		this._removeElem.disabled = this._ownerId !== idPerson;
 
 		this._setEventListeners();
 
@@ -53,7 +53,7 @@ export default class Card{
 			this._clickLike(evt);
 		});
 
-		this._element.querySelector('.card__close').addEventListener('click', (evt) => this._clickDelCard(evt));
+		this._removeElem.addEventListener('click', () => this._clickDelCard());
 
 	}
 
@@ -67,12 +67,17 @@ export default class Card{
 	}
 
 
-	_clickDelCard(evt) {
-		this._addListenerDel(evt);
+	_clickDelCard() {
+		this._addListenerDel();
 	}
 
 	_clickOpenPopup(){
 		return this._handleCardClick();
 	}
 	
+	removeCard() {
+		const removeClick = this._removeElem.closest('.card')
+		return removeClick.remove()
+	}
+
 }

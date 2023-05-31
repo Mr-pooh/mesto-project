@@ -31,38 +31,38 @@ const api = new Api(config);
 
 const classUserInfo = new UserInfo('profile-info__name', 'profile-info__profession');
 
-const popupImageClass = new PopupWithImage('.popup_form_opened-image')
+const popupImageClass = new PopupWithImage('.popup_form_opened-image');
+
+const classCardGenerate = (item) => new Card({
+	data: item,
+	selector: `#card`,
+	handleCardClick: () => {
+		popupImageClass.open(item)
+	},
+	addListenerDel: () => {
+	/* 	console.log(classCardGenerate(item).removeCard()) */
+		api.getDeleteCard(item._id)
+			.then(() => {
+				classCardGenerate(item).removeCard()
+			})
+			.catch(err => console.log(err));
+		},
+	addListenerLike: (evt, meth) => {
+		api.getAddLike(item._id, `${meth}`)
+		.then((item) => {
+			evt.target.classList.toggle('card__like_active');
+			evt.target.closest('.card').querySelector('.card__like-sum').textContent = item.likes.length;
+		})
+		.catch((error) => {
+			return console.log(error);
+		});
+	}
+});
 
 const sectionItems = new Section({
-	items: [],
 	renderer: 
-		(item, funck) => {
-			const classCardGenerate = new Card({
-				data: item,
-				selector: `#card`,
-				handleCardClick: () => {
-					popupImageClass.open(item)
-				},
-				addListenerDel: (evt) => {
-					api.getDeleteCard(item._id)
-						.then(() => {
-							evt.target.closest('.card').remove();
-						})
-						.catch(err => console.log(err));
-					},
-				addListenerLike: (evt, meth) => {
-					api.getAddLike(item._id, `${meth}`)
-					.then((item) => {
-						evt.target.classList.toggle('card__like_active');
-						evt.target.closest('.card').querySelector('.card__like-sum').textContent = item.likes.length;
-					})
-					.catch((error) => {
-						return console.log(error);
-					});
-				}
-			});
-			
-				funck(classCardGenerate);
+		(item, idPerson) => {
+			return classCardGenerate(item).generate(idPerson);
 		}
 	},
 	cardsContainer
@@ -75,10 +75,7 @@ const popupAddFormClass = new PopupWithForm({
 		renderLoading(true, popupFormCreate, 'Сохранение...');
 		api.getAddCardOnServer(formData.inputName, formData.inputUrl)
 			.then((res) => {
-				sectionItems.renderItems([res] ,(item) => {
-					const cardAddGenerate = item.generate(res.owner._id)
-					sectionItems.addItem(cardAddGenerate);
-				});
+				sectionItems.addItem(res, res.owner._id);
 			})
 			.then(() => {
 				popupAddFormClass.close()
@@ -176,10 +173,7 @@ Promise.all([
 	classUserInfo.setUserInfo(info);
 	classUserInfo.setAvatar(info);
 	
-	sectionItems.renderItems(initialCards ,(item) => {
-		const cardGenerate = item.generate(info._id)
-		sectionItems.setItem(cardGenerate);
-	});
+	sectionItems.renderItems(initialCards, info._id);
 
 
 })
