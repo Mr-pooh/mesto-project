@@ -78,6 +78,15 @@ export default class FormValidator {
 		});
 	}
 
+	// сброс ошибки и проверка активности кнопки сабмит
+	resetValidation() {
+		this._inputList.forEach((inputElement) => {
+			this._hideInputError(inputElement)
+		});
+		
+		this._toggleButtonState();
+		}
+
 	enableValidation() {
 		this._element = this._getElement()
 		this._setEventListeners()
